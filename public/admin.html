@@ -1,67 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <link rel="stylesheet" href="admin.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel – NexUse</title>
+  <link rel="stylesheet" href="assets/css/admin.css">
 </head>
 <body>
 
-    <nav class="navbar" id="mainNavbar">
-        <a href="index.html" class="navbar-brand" id="navBrand">
-            <span><span class="nex">Nex</span><span class="use">Use</span></span>
-        </a>
+  <nav class="navbar" id="mainNavbar">
+    <a href="index.html" class="navbar-brand" id="navBrand">
+      <svg class="navbar-brand-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 22h8l10 26h28l8-18H30" stroke="#1a5cff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="36" cy="60" r="6" fill="#1a5cff"/>
+        <circle cx="60" cy="60" r="6" fill="#1a5cff"/>
+        <path d="M48 38c-3-5-10-5-13 0-2.5 4 0 10 6 14l7 5 7-5c6-4 8.5-10 6-14-3-5-10-5-13 0z" fill="#12b76a"/>
+      </svg>
+      <span><span class="nex">Nex</span><span class="use">Use</span></span>
+    </a>
 
-        <ul class="navbar-links" id="navLinks">
-            <li><a href="index.html" id="nav-home">Home</a></li>
-            <li><a href="marketplace.html" id="nav-marketplace">Marketplace</a></li>
-            <li><a href="donation.html" id="nav-donation-requests">Donation Requests</a></li>
-            <li id="nav-dashboard-li" class="hidden"><a href="dashboard.html" id="nav-dashboard">Dashboard</a></li>
-        </ul>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="index.html" id="nav-home">Home</a></li>
+      <li><a href="marketplace.html" id="nav-marketplace">Marketplace</a></li>
+      <li><a href="donation.html" id="nav-donation-requests">Donation Requests</a></li>
+      <li id="nav-dashboard-li" class="hidden"><a href="dashboard.html" id="nav-dashboard">Dashboard</a></li>
+    </ul>
 
-
-        <div class="navbar-actions" id="navActions">
-            <!-- Logged-out state -->
-            <div id="navLoggedOut" class="flex gap-8">
-                <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
-                <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+    <div class="navbar-actions" id="navActions">
+      <!-- Logged-out state -->
+      <div id="navLoggedOut" class="flex gap-8">
+        <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+      <!-- Logged-in state -->
+      <div id="navLoggedIn" class="hidden flex gap-12">
+        <div class="notif-wrapper">
+          <button class="notif-bell-btn" id="notifBellBtn" title="Notifications">
+            🔔
+            <span class="notif-count-badge hidden" id="notifCountBadge">0</span>
+          </button>
+          <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-dropdown-head">
+              <span>Notifications</span>
+              <a href="#" id="markAllReadBtn">Mark all read</a>
             </div>
-            <!-- Logged-in state -->
-            <div id="navLoggedIn" class="hidden flex gap-12">
-                <div class="notif-wrapper">
-                    <button class="notif-bell-btn" id="notifBellBtn" title="Notifications">
-                        🔔
-                        <span class="notif-count-badge hidden" id="notifCountBadge">0</span>
-                    </button>
-                    <div class="notif-dropdown" id="notifDropdown">
-                        <div class="notif-dropdown-head">
-                            <span>Notifications</span>
-                            <a href="#" id="markAllReadBtn">Mark all read</a>
-                        </div>
-                        <div class="notif-list" id="notifList"></div>
-                    </div>
-                </div>
-                <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
-            </div>
-        </div>    
-    </nav>
-
-    <main class="page-content" id="view-dashboard">
-        <div class="dashboard-sidebar">
-            <div class="dash-profile-avatar" style="background:var(--red);">A</div>
-            <div class="dash-profile-name">NexUse Admin</div>
-            <div class="dash-profile-role">System Administrator</div>
-            <div class="dash-profile-rating" style="color:var(--text-secondary);">Oversight &amp; Moderation</div>
-
-            <nav class="dash-nav">
-                <a href="dashboard.html" class="dash-nav-item">👤 Back to Dashboard</a>
-                <button class="dash-nav-item active" id="dashTab-admin">🛡️ Administrator Desk</button>
-            </nav>
+            <div class="notif-list" id="notifList"></div>
+          </div>
         </div>
+        <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
+      </div>
+    </div>
+  </nav>
 
+  <main class="page-content" id="view-dashboard">
+    <!-- Sidebar -->
+    <div class="dashboard-sidebar">
+      <div class="dash-profile-avatar" style="background:var(--red);">A</div>
+      <div class="dash-profile-name">NexUse Admin</div>
+      <div class="dash-profile-role">System Administrator</div>
+      <div class="dash-profile-rating" style="color:var(--text-secondary);">Oversight &amp; Moderation</div>
 
-        <div class="dash-main">
+      <nav class="dash-nav">
+        <a href="dashboard.html" class="dash-nav-item">👤 Back to Dashboard</a>
+        <button class="dash-nav-item active" id="dashTab-admin">🛡️ Administrator Desk</button>
+      </nav>
+    </div>
+
+    <div class="dash-main">
       <div id="dashView-admin">
         <div class="dash-page-title">Administrator Desk</div>
         <div class="dash-page-sub">System analytics, user management, listings oversight, and disputes resolution.</div>
@@ -150,13 +155,11 @@
         </div>
       </div>
     </div>
+  </main>
 
-    </main>
-    
-
-
-
-    <dialog class="modal" id="resolveDisputeModal">
+  <!-- MODALS -->
+  <!-- Admin Resolve Dispute Modal -->
+  <dialog class="modal" id="resolveDisputeModal">
     <div class="modal-header">
       <span class="modal-title">Resolve Dispute</span>
       <button class="modal-close-btn" onclick="document.getElementById('resolveDisputeModal').close()">&times;</button>
@@ -190,7 +193,42 @@
     </form>
   </dialog>
 
-
+  <!-- Admin Edit User Modal -->
+  <dialog class="modal" id="adminEditUserModal">
+    <div class="modal-header">
+      <span class="modal-title">Moderate User</span>
+      <button class="modal-close-btn" onclick="document.getElementById('adminEditUserModal').close()">&times;</button>
+    </div>
+    <form id="adminEditUserForm">
+      <input type="hidden" id="aeUserId">
+      <div class="modal-body">
+        <div class="form-row">
+          <div>
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="aeName" required>
+          </div>
+          <div>
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" id="aeEmail" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label class="form-label">Rating (1–5)</label>
+            <input type="number" class="form-control" id="aeRating" min="1" max="5" step="0.1" required>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding-top:26px;">
+            <input type="checkbox" id="aeVerified" style="width:18px;height:18px;accent-color:var(--green);">
+            <label for="aeVerified" style="font-weight:600;font-size:0.85rem;cursor:pointer;">Account Verified</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-md" onclick="document.getElementById('adminEditUserModal').close()">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-md">Save Changes</button>
+      </div>
+    </form>
+  </dialog>
 
 </body>
 </html>
