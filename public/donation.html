@@ -63,11 +63,102 @@
       <!-- Guest / Logged-out state -->
       <a href="login.html" class="btn btn-primary btn-md" id="donPageSignInBtn">Sign In to Request Item</a>
       <!-- Authenticated / Logged-in state -->
-      <button class="btn btn-primary btn-md hidden" id="donPageCreateBtn">
+      <button class="btn btn-primary btn-md hidden" id="donPageCreateBtn" onclick="openDonationRequestModal()">
         + Create Donation Request
       </button>
     </div>
   </main>
+
+  <dialog class="modal" id="donationReqModal">
+    <div class="modal-header">
+      <span class="modal-title" id="drModalTitle">Create Donation Request</span>
+      <button class="modal-close-btn" onclick="document.getElementById('donationReqModal').close()">&times;</button>
+    </div>
+    <form id="donationReqForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">What do you need *</label>
+          <input type="text" class="form-control" id="drTitle" placeholder="e.g. Laptops for Kids Charity Program"
+            required>
+        </div>
+        <div class="form-row">
+          <div>
+            <label class="form-label">Category *</label>
+            <select class="form-control" id="drCategory" required>
+              <option value="Electronics">Electronic Items</option>
+              <option value="Books">Books and Educational Equipment</option>
+              <option value="Clothing">Clothing and Accessories</option>
+              <option value="Tools">Manual and Mechanical Tools</option>
+              <option value="Furniture">Furniture</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Your Location (District)*</label>
+            <select class="form-control" id="drLocation" required>
+              <option value="" disabled>Select District</option>
+              <option value="Ampara">Ampara</option>
+              <option value="Anuradhapura">Anuradhapura</option>
+              <option value="Badulla">Badulla</option>
+              <option value="Batticaloa">Batticaloa</option>
+              <option value="Colombo">Colombo</option>
+              <option value="Galle">Galle</option>
+              <option value="Gampaha">Gampaha</option>
+              <option value="Hambantota">Hambantota</option>
+              <option value="Jaffna">Jaffna</option>
+              <option value="Kalutara">Kalutara</option>
+              <option value="Kandy">Kandy</option>
+              <option value="Kegalle">Kegalle</option>
+              <option value="Kilinochchi">Kilinochchi</option>
+              <option value="Kurunegala">Kurunegala</option>
+              <option value="Mannar">Mannar</option>
+              <option value="Matale">Matale</option>
+              <option value="Matara">Matara</option>
+              <option value="Monaragala">Monaragala</option>
+              <option value="Mullaitivu">Mullaitivu</option>
+              <option value="Nuwara Eliya">Nuwara Eliya</option>
+              <option value="Polonnaruwa">Polonnaruwa</option>
+              <option value="Puttalam">Puttalam</option>
+              <option value="Ratnapura">Ratnapura</option>
+              <option value="Trincomalee">Trincomalee</option>
+              <option value="Vavuniya">Vavuniya</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Item Needed (specific type) *</label>
+          <input type="text" class="form-control" id="drItemType" placeholder="e.g. LAPTOPS / TABLETS" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Explain your need *</label>
+          <textarea class="form-control" id="drDescription"
+            placeholder="Describe why you need it, quantity, condition acceptable…" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Attach Proof / Documents / Images (Optional)</label>
+          <input type="file" class="form-control" id="drProof" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt"
+            style="border: 1px dashed #cbd5e1; padding: 6px 12px; height: auto;">
+          <small style="color: var(--text-secondary); font-size: 0.72rem; display: block; margin-top: 4px;">
+            Allowed types: Images (JPG, PNG, GIF), PDF, Word (DOC, DOCX), Text (TXT). Max 5MB.
+          </small>
+          <div id="drCurrentProofInfo"
+            style="font-size:0.78rem; margin-top:8px; color:var(--text-secondary); display:none;"></div>
+          <div class="flex items-center gap-8" id="drRemoveProofGroup" style="display: none; margin-top: 8px;">
+            <input type="checkbox" id="drRemoveProof" style="width:auto; margin:0;">
+            <label for="drRemoveProof" style="font-size:0.78rem; margin:0; cursor:pointer; color:#ef4444;">Remove
+              existing proof file</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-md"
+          onclick="document.getElementById('donationReqModal').close()">Cancel</button>
+        <button type="submit" class="btn btn-green btn-md" id="drSubmitBtn">Post Request</button>
+      </div>
+    </form>
+  </dialog>
+
+
   <script src="assets/JS/common.js"></script>
   <script src="assets/JS/donation.js"></script>
 </body>
