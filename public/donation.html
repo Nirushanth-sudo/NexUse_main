@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donation Requests – NexUse</title>
-    <link rel="stylesheet" href="assets/css/donation.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donation Requests – NexUse</title>
+  <link rel="stylesheet" href="assets/css/donation.css">
 </head>
+
 <body>
-    <!-- GLOBAL NAVBAR -->
+  <!-- GLOBAL NAVBAR -->
   <nav class="navbar" id="mainNavbar">
     <a href="index.html" class="navbar-brand" id="navBrand">
       <svg class="navbar-brand-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -52,5 +54,21 @@
       </div>
     </div>
   </nav>
+
+  <main class="page-content" id="view-donation-requests">
+    <div class="donation-page-hero">
+      <h1>Support Your Neighbors</h1>
+      <p>Browse community donation needs or create a request if you need support with essential items.</p>
+
+      <!-- Guest / Logged-out state -->
+      <a href="login.html" class="btn btn-primary btn-md" id="donPageSignInBtn">Sign In to Request Item</a>
+      <!-- Authenticated / Logged-in state -->
+      <button class="btn btn-primary btn-md hidden" id="donPageCreateBtn">
+        + Create Donation Request
+      </button>
+    </div>
+  </main>
+  <script src="assets/JS/common.js"></script>
+  <script src="assets/JS/donation.js"></script>
 </body>
 </html>
