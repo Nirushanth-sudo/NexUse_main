@@ -67,6 +67,79 @@
         + Create Donation Request
       </button>
     </div>
+
+    <div class="donation-layout">
+      <!-- Sidebar Filters overlay -->
+      <div class="sidebar-overlay" id="donSidebarOverlay"></div>
+
+      <!-- Sidebar Filters -->
+      <aside class="marketplace-sidebar" id="donMarketplaceSidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-heading">Filters</div>
+          <button class="sidebar-close-btn" id="donSidebarCloseBtn" aria-label="Close filters">&times;</button>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">CATEGORY</div>
+          <div class="filter-pills-group" id="donFilterCategory">
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Electronics">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Electronics</span>
+            </label>
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Furniture">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Furniture</span>
+            </label>
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Books">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Books</span>
+            </label>
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Clothing">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>-->  Clothing</span>
+            </label>
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Tools">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Tools</span>
+            </label>
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Other">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Other</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">LOCATION</div>
+          <div class="custom-select-wrapper">
+            <select class="form-control" id="donFilterLocation">
+              <option value="">All Locations</option>
+              <option value="Colombo">Colombo</option>
+              <option value="Colombo Suburb">Colombo Suburb</option>
+            </select>
+            <span class="location-icon">📍</span> <!-- Or use an SVG pin icon -->
+          </div>
+        </div>
+
+        <button class="sidebar-btn-reset" id="donResetFiltersBtn">
+          <span class="reset-icon">↺</span> RESET ALL FILTERS
+        </button>
+      </aside>
+    
+      <div class="donation-main">
+          <div class="donation-controls">
+            <button class="btn btn-outline btn-md mobile-filter-btn" id="donMobileFilterBtn">
+              <svg class="icon-filter" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+              </svg>
+              Filters
+            </button>
+          </div>
+          <div class="donation-cards-grid" id="donCardsGrid">
+              <!-- dynamic donation cards -->
+          </div>
+      </div>
+    </div>
   </main>
 
   <dialog class="modal" id="donationReqModal">
@@ -157,7 +230,6 @@
       </div>
     </form>
   </dialog>
-
 
   <script src="assets/JS/common.js"></script>
   <script src="assets/JS/donation.js"></script>
