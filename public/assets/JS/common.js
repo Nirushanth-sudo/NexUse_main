@@ -34,7 +34,7 @@ window.userSession = {
     username: "johndoe",
     name: "John Doe",
     email: "john.doe@example.com",
-    role: "admin",
+    role: "user",
     rating: 4.8,
     verified: true,
     phone: "0771234567",
@@ -158,12 +158,12 @@ function initNotifications() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: 0 })
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    fetchNotifications();
-                }
-            });
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchNotifications();
+                    }
+                });
         };
     }
 
@@ -177,25 +177,25 @@ function readNotification(id, el) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            el.classList.remove('unread');
-            const badge = document.getElementById('notifCountBadge');
-            let count = parseInt(badge.textContent || '0');
-            if (count > 1) {
-                badge.textContent = count - 1;
-            } else {
-                badge.classList.add('hidden');
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                el.classList.remove('unread');
+                const badge = document.getElementById('notifCountBadge');
+                let count = parseInt(badge.textContent || '0');
+                if (count > 1) {
+                    badge.textContent = count - 1;
+                } else {
+                    badge.classList.add('hidden');
+                }
             }
-        }
-    });
+        });
 }
 
 
 function escapeHTML(str) {
     if (!str) return '';
-    return str.replace(/[&<>'"]/g, 
+    return str.replace(/[&<>'"]/g,
         tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
     );
 }

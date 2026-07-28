@@ -231,6 +231,63 @@
     </form>
   </dialog>
 
+  <!-- Donation Detail Modal -->
+  <dialog class="modal" id="donationDetailModal">
+    <div class="modal-header">
+      <span class="modal-title" id="dTitleHeader">Donation Request Details</span>
+      <button class="modal-close-btn" id="dCloseBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-modal-image-area" id="dImageArea" style="height:180px; position:relative; overflow:hidden; border-radius:var(--radius-md); background:var(--bg); margin-bottom:16px;">
+        <img id="dCoverImage" src="" alt="Category Image" style="width:100%; height:100%; object-fit:cover;">
+        <span style="position:absolute;top:12px;left:12px;" id="dBadge"></span>
+      </div>
+      <div class="detail-meta-grid" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-bottom:16px; background:var(--bg); padding:12px; border-radius:var(--radius-sm);">
+        <div class="detail-meta-item">
+          <div class="detail-meta-label" style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:700;">Location</div>
+          <div class="detail-meta-value" id="dLocation" style="font-size:0.85rem; font-weight:600; color:var(--text); margin-top:2px;">-</div>
+        </div>
+        <div class="detail-meta-item">
+          <div class="detail-meta-label" style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:700;">Specific Item</div>
+          <div class="detail-meta-value" id="dItemType" style="font-size:0.85rem; font-weight:600; color:var(--text); margin-top:2px;">-</div>
+        </div>
+        <div class="detail-meta-item">
+          <div class="detail-meta-label" style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:700;">Status</div>
+          <div class="detail-meta-value" id="dVerifiedStatus" style="font-size:0.85rem; font-weight:600; color:var(--text); margin-top:2px;">-</div>
+        </div>
+      </div>
+      
+      <div style="margin-bottom:20px; border-bottom:1px solid var(--border-light); padding-bottom:16px;">
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:6px;font-weight:700;">Explain Need</div>
+        <p id="dDescription" style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;white-space:pre-wrap;"></p>
+      </div>
+
+      <!-- Proof document area -->
+      <div id="dProofArea" class="hidden" style="margin-bottom:20px; border-bottom:1px solid var(--border-light); padding-bottom:16px;">
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:8px;font-weight:700;">Verified Proof &amp; Documents</div>
+        <div id="dProofLinkContainer"></div>
+      </div>
+
+      <!-- Requester trust info box -->
+      <div class="modal-trust-box" style="background:#f8fafc; padding:16px; border:1px solid var(--border); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:space-between; gap:16px;">
+        <a id="dRequesterLink" href="" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; flex:1;">
+          <div id="dRequesterAvatar" class="donor-info-avatar" style="width:44px; height:44px; font-size:1.1rem; border-radius:50%; background:linear-gradient(135deg, var(--primary-light) 0%, #dbeafe 100%); color:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700;">-</div>
+          <div>
+            <div style="font-size:0.88rem; font-weight:700; color:var(--text);" id="dRequesterName">-</div>
+            <div style="font-size:0.8rem; color:var(--text-secondary); display:flex; align-items:center; gap:4px; margin-top:2px;" id="dRequesterStars">
+              ⭐ - <span style="font-weight:500; font-size:0.72rem;">(Rating)</span>
+            </div>
+          </div>
+        </a>
+        <a id="dRequesterProfileBtn" href="" class="btn btn-outline btn-sm">View Trust Profile</a>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-md" id="dChatBtn">💬 Message Requester</button>
+      <button class="btn btn-green btn-md" id="dActionBtn">Pledge Item</button>
+    </div>
+  </dialog>
+
   <script src="assets/JS/common.js"></script>
   <script src="assets/JS/donation.js"></script>
 </body>

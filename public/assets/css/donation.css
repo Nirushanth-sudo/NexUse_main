@@ -956,39 +956,103 @@ select.form-control {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 0;
+  overflow: hidden;
   box-shadow: var(--shadow-xs);
   transition: var(--transition);
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
 .donation-card:hover {
   box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
-.donation-card-header {
+/* Image Container */
+.donation-card-image {
+  height: 160px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.donation-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.donation-card:hover .donation-card-image img {
+  transform: scale(1.04);
+}
+
+.badge-category-pill {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-xs);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+.donation-card-image .badge-category-pill {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}
+
+/* Card Body Content */
+.donation-card-body {
+  padding: 20px 24px 12px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.donation-card-header-row {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.donation-card-location {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.verified-badge-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #b45309;
+  background: #fef3c7;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
 }
 
 .donation-card-title {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  margin-bottom: 4px;
   color: var(--text);
+  line-height: 1.4;
 }
 
 .donation-card-tag {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--green);
-  margin-bottom: 8px;
 }
 
 .donation-card-desc {
@@ -998,13 +1062,113 @@ select.form-control {
   flex: 1;
 }
 
+.donation-proof-wrapper {
+  margin-top: 6px;
+}
+
+.proof-link {
+  font-size: 0.78rem;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px dashed var(--border);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  transition: var(--transition);
+}
+
+.proof-link:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+}
+
+/* Card Footer */
 .donation-card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
+  padding: 16px 24px 20px 24px;
   border-top: 1px solid var(--border-light);
-  padding-top: 14px;
+}
+
+/* Donor Profile Link */
+.donor-info-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+.donor-info-link:hover {
+  opacity: 0.85;
+}
+
+.donor-info-link:hover .donor-name {
+  color: var(--primary);
+}
+
+.donor-info-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-light) 0%, #dbeafe 100%);
+  color: var(--primary);
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-light);
+}
+
+.donor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.donor-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  transition: var(--transition);
+}
+
+.donor-rating {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.donor-rating .rating-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.72rem;
+}
+
+.donation-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-delete {
+  color: var(--red);
+  border-color: #fca5a5 !important;
+}
+
+.btn-delete:hover {
+  background: #fef2f2;
+  border-color: var(--red) !important;
+  color: var(--red) !important;
 }
 
 .donor-info {
@@ -1150,4 +1314,98 @@ select.form-control {
   .donation-layout .marketplace-sidebar.open {
     left: 0;
   }
+
+  /* Modal details responsiveness */
+  .modal-trust-box {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    text-align: center;
+  }
+
+  .modal-trust-box a#dRequesterLink {
+    flex-direction: column !important;
+    text-align: center;
+    align-items: center !important;
+  }
+
+  #donationDetailModal .modal-footer {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+    padding: 16px !important;
+  }
+
+  #donationDetailModal .modal-footer button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* Donation Detail Modal Styling */
+#donationDetailModal {
+  max-width: 580px;
+  width: 90%;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  padding: 0;
+}
+
+#donationDetailModal::backdrop {
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+#donationDetailModal .modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#donationDetailModal .modal-body {
+  padding: 24px;
+  max-height: calc(82vh - 120px);
+  overflow-y: auto;
+}
+
+#donationDetailModal .modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background: #f8fafc;
+}
+
+#donationDetailModal .detail-meta-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+#donationDetailModal .detail-meta-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 2px;
+}
+
+#donationDetailModal .badge-category-pill {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
 }

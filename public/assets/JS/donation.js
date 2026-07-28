@@ -90,7 +90,7 @@ const MOCK_DONATION_REQUESTS = [
         proof_file: '#',
         requester_name: 'Nished Ruveesha',
         rating: 5.00,
-        requester_id: 101
+        requester_id: 1
     },
     {
         id: 2,
@@ -168,35 +168,53 @@ function renderDonationRequests(initLocations = false) {
         return;
     }
 
+    const CATEGORY_IMAGES = {
+        'Electronics': 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&auto=format&fit=crop&q=60',
+        'Books': 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=500&auto=format&fit=crop&q=60',
+        'Furniture': 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=500&auto=format&fit=crop&q=60',
+        'Clothing': 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500&auto=format&fit=crop&q=60',
+        'Tools': 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=500&auto=format&fit=crop&q=60',
+        'Other': 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500&auto=format&fit=crop&q=60'
+    };
+
     // Render cards template
     grid.innerHTML = filteredRequests.map(d => `
-        <div class="donation-card">
-            <div class="donation-card-header">
+        <div class="donation-card" onclick="openDonationDetail(${d.id}, event)" style="cursor: pointer;">
+            <div class="donation-card-image">
+                <img src="${CATEGORY_IMAGES[d.category] || CATEGORY_IMAGES['Other']}" alt="${escapeHTML(d.category)}">
                 <span class="badge-category-pill">${escapeHTML(d.category)}</span>
-                <span style="font-size:0.78rem;color:var(--text-secondary);">📍 ${escapeHTML(d.location)}</span>
             </div>
-            <div class="donation-card-title">${escapeHTML(d.title)}</div>
-            <div class="donation-card-tag">ITEM NEEDED: ${escapeHTML(d.item_type)}</div>
-            <div class="donation-card-desc">${escapeHTML(d.description)}</div>
-            ${d.proof_file ? `
-            <div class="donation-proof-wrapper" style="margin-top: 10px; margin-bottom: 5px;">
-                <a href="${escapeHTML(d.proof_file)}" target="_blank" class="proof-link" style="font-size: 0.78rem; color: #1a5cff; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; font-weight: 500; border: 1px dashed #e2e8f0; padding: 4px 8px; border-radius: 6px; background: #f8fafc;">
-                    📎 View Attached Proof
-                </a>
-            </div>
-            ` : ''}
-            <div class="donation-card-footer">
-                <div class="donor-info">
-                    <span class="donor-name">${escapeHTML(d.requester_name)}</span>
-                    <span class="donor-rating">⭐ ${d.rating.toFixed(2)} <span>Rating</span></span>
+            <div class="donation-card-body">
+                <div class="donation-card-header-row">
+                    <span class="donation-card-location">📍 ${escapeHTML(d.location)}</span>
+                    ${d.rating >= 4.7 ? `<span class="verified-badge-pill" title="Top Rated Member">★ Top Rated</span>` : ''}
                 </div>
+                <div class="donation-card-title">${escapeHTML(d.title)}</div>
+                <div class="donation-card-tag">NEEDED: ${escapeHTML(d.item_type)}</div>
+                <div class="donation-card-desc">${escapeHTML(d.description)}</div>
+                ${d.proof_file && d.proof_file !== '#' ? `
+                <div class="donation-proof-wrapper">
+                    <a href="${escapeHTML(d.proof_file)}" target="_blank" class="proof-link" onclick="event.stopPropagation()">
+                        📎 View Verified Proof
+                    </a>
+                </div>
+                ` : ''}
+            </div>
+            <div class="donation-card-footer">
+                <a href="profile.html?id=${d.requester_id}" class="donor-info-link" title="Click to view trust profile" onclick="event.stopPropagation()">
+                    <div class="donor-info-avatar">${escapeHTML(d.requester_name.charAt(0))}</div>
+                    <div class="donor-info">
+                        <span class="donor-name">${escapeHTML(d.requester_name)}</span>
+                        <span class="donor-rating">⭐ ${d.rating.toFixed(2)} <span class="rating-label">Rating</span></span>
+                    </div>
+                </a>
                 ${(window.userSession && (window.userSession.id === d.requester_id || window.userSession.role === 'admin')) ? `
-                <div style="display: flex; gap: 8px;">
+                <div class="donation-card-actions" onclick="event.stopPropagation()">
                     <button class="btn btn-outline btn-sm" onclick="openEditDonationModal(${d.id})">Edit</button>
-                    <button class="btn btn-outline btn-sm" style="color:#ef4444; border-color:#fca5a5;" onclick="deleteDonationRequest(${d.id})">Delete</button>
+                    <button class="btn btn-outline btn-sm btn-delete" onclick="deleteDonationRequest(${d.id})">Delete</button>
                 </div>
                 ` : `
-                <button class="btn btn-green btn-sm" onclick="pledgeDonation(${d.id})">Pledge Item</button>
+                <button class="btn btn-green btn-sm" onclick="event.stopPropagation(); pledgeDonation(${d.id})">Pledge Item</button>
                 `}
             </div>
         </div>
@@ -227,4 +245,94 @@ function openDonationRequestModal() {
 
     const modal = document.getElementById('donationReqModal');
     if (modal) modal.showModal();
+}
+
+function openDonationDetail(id, event) {
+    // If the click was directly on an interactive element inside the card, stop
+    if (event && (event.target.tagName === 'A' || event.target.tagName === 'BUTTON' || event.target.closest('a') || event.target.closest('button'))) {
+        return;
+    }
+
+    const d = MOCK_DONATION_REQUESTS.find(x => x.id === id);
+    if (!d) return;
+
+    // Populate modal fields
+    document.getElementById('dLocation').textContent = d.location;
+    document.getElementById('dItemType').textContent = d.item_type;
+    document.getElementById('dDescription').textContent = d.description;
+
+    const CATEGORY_IMAGES = {
+        'Electronics': 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&auto=format&fit=crop&q=60',
+        'Books': 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=500&auto=format&fit=crop&q=60',
+        'Furniture': 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=500&auto=format&fit=crop&q=60',
+        'Clothing': 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500&auto=format&fit=crop&q=60',
+        'Tools': 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=500&auto=format&fit=crop&q=60',
+        'Other': 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500&auto=format&fit=crop&q=60'
+    };
+    
+    document.getElementById('dCoverImage').src = CATEGORY_IMAGES[d.category] || CATEGORY_IMAGES['Other'];
+    document.getElementById('dCoverImage').alt = d.category;
+    document.getElementById('dBadge').innerHTML = `<span class="badge-category-pill">${escapeHTML(d.category)}</span>`;
+
+    // Verified status
+    document.getElementById('dVerifiedStatus').innerHTML = d.proof_file && d.proof_file !== '#' 
+        ? `<span style="color:var(--green); font-weight:700;">✓ Verified</span>` 
+        : `<span style="color:var(--text-secondary);">Self-reported</span>`;
+
+    // Proof link
+    const proofArea = document.getElementById('dProofArea');
+    const proofContainer = document.getElementById('dProofLinkContainer');
+    if (d.proof_file && d.proof_file !== '#') {
+        proofArea.classList.remove('hidden');
+        proofContainer.innerHTML = `
+            <a href="${escapeHTML(d.proof_file)}" target="_blank" class="proof-link" style="display:inline-flex; align-items:center; gap:6px;">
+                📎 Open Official Verification Document (PDF/Image)
+            </a>
+        `;
+    } else {
+        proofArea.classList.add('hidden');
+        proofContainer.innerHTML = '';
+    }
+
+    // Requester profile link details
+    document.getElementById('dRequesterAvatar').textContent = d.requester_name.charAt(0);
+    document.getElementById('dRequesterName').textContent = d.requester_name;
+    document.getElementById('dRequesterStars').innerHTML = `⭐ ${d.rating.toFixed(2)} <span style="font-weight:500; font-size:0.75rem; color:var(--text-secondary);">(Rating)</span>`;
+
+    const profileUrl = `profile.html?id=${d.requester_id}`;
+    document.getElementById('dRequesterLink').href = profileUrl;
+    document.getElementById('dRequesterProfileBtn').href = profileUrl;
+
+    // Action button setup
+    const actionBtn = document.getElementById('dActionBtn');
+    const chatBtn = document.getElementById('dChatBtn');
+
+    if (window.userSession && d.requester_id === window.userSession.id) {
+        actionBtn.textContent = "Your Request (Edit)";
+        actionBtn.className = "btn btn-outline btn-sm";
+        actionBtn.onclick = () => {
+            document.getElementById('donationDetailModal').close();
+            openEditDonationModal(d.id);
+        };
+        chatBtn.classList.add('hidden');
+    } else {
+        actionBtn.textContent = "💝 Pledge Item";
+        actionBtn.className = "btn btn-green btn-sm";
+        actionBtn.onclick = () => {
+            document.getElementById('donationDetailModal').close();
+            pledgeDonation(d.id);
+        };
+        chatBtn.classList.remove('hidden');
+        chatBtn.onclick = () => {
+            document.getElementById('donationDetailModal').close();
+            window.location.href = `dashboard.html?tab=chat&request=${d.id}`;
+        };
+    }
+
+    // Close button
+    document.getElementById('dCloseBtn').onclick = () => {
+        document.getElementById('donationDetailModal').close();
+    };
+
+    document.getElementById('donationDetailModal').showModal();
 }
