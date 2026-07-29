@@ -178,7 +178,7 @@ function openProductDetail(id) {
                 document.getElementById('pdCategory').textContent = l.category;
                 document.getElementById('pdCondition').textContent = l.condition;
                 document.getElementById('pdLocation').textContent = l.location;
-                document.getElementById('pdOwner').textContent = `${l.owner_name} (★ ${l.owner_rating.toFixed(1)})`;
+                document.getElementById('pdOwner').innerHTML = `<a href="profile.html?id=${l.owner_id}" style="color:var(--primary); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="View trust profile">👤 ${escapeHTML(l.owner_name)} <span style="color:var(--text-secondary); font-weight:500; font-size:0.8rem;">(★ ${l.owner_rating.toFixed(1)})</span></a>`;
                 document.getElementById('pdDescription').textContent = l.description;
 
                 const badgeMap = { buy: "badge-sell SELL", rent: "badge-rent RENT", donate: "badge-donate DONATE", share: "badge-donate FREE SHARE", disposal: "badge-disposal DISPOSAL" };
