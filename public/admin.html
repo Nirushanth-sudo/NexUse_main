@@ -3,232 +3,670 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel – NexUse</title>
+  <title>Admin Command Dashboard – NexUse Marketplace</title>
   <link rel="stylesheet" href="assets/css/admin.css">
 </head>
 <body>
 
+  <!-- TOP NAVIGATION BAR (RESPONSIVE LIGHT THEME) -->
   <nav class="navbar" id="mainNavbar">
-    <a href="index.html" class="navbar-brand" id="navBrand">
-      <svg class="navbar-brand-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 22h8l10 26h28l8-18H30" stroke="#1a5cff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="36" cy="60" r="6" fill="#1a5cff"/>
-        <circle cx="60" cy="60" r="6" fill="#1a5cff"/>
-        <path d="M48 38c-3-5-10-5-13 0-2.5 4 0 10 6 14l7 5 7-5c6-4 8.5-10 6-14-3-5-10-5-13 0z" fill="#12b76a"/>
-      </svg>
-      <span><span class="nex">Nex</span><span class="use">Use</span></span>
-    </a>
+    <div class="navbar-brand">
+      <a href="index.html" class="flex gap-8">
+        <svg width="32" height="32" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 22h8l10 26h28l8-18H30" stroke="#1a5cff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="36" cy="60" r="6" fill="#1a5cff"/>
+          <circle cx="60" cy="60" r="6" fill="#1a5cff"/>
+          <path d="M48 38c-3-5-10-5-13 0-2.5 4 0 10 6 14l7 5 7-5c6-4 8.5-10 6-14-3-5-10-5-13 0z" fill="#10b981"/>
+        </svg>
+        <span><span class="nex">Nex</span><span class="use">Use</span></span>
+      </a>
+      <span class="region-badge">SRI LANKA</span>
+    </div>
 
+    <!-- NAVBAR LINKS -->
     <ul class="navbar-links" id="navLinks">
-      <li><a href="index.html" id="nav-home">Home</a></li>
-      <li><a href="marketplace.html" id="nav-marketplace">Marketplace</a></li>
-      <li><a href="donation.html" id="nav-donation-requests">Donation Requests</a></li>
-      <li id="nav-dashboard-li" class="hidden"><a href="dashboard.html" id="nav-dashboard">Dashboard</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="marketplace.html">Browse Items</a></li>
+      <li><a href="resell-rent.html">Resell/Rent</a></li>
+      <li><a href="donate.html">Donate</a></li>
     </ul>
 
-    <div class="navbar-actions" id="navActions">
-      <!-- Logged-out state -->
-      <div id="navLoggedOut" class="flex gap-8">
-        <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
-        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+    <div class="navbar-actions">
+      <div class="admin-pill-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 100 10 5 5 0 000-10zM4 20c0-3.3 3.6-6 8-6s8 2.7 8 6v1H4v-1z"/></svg>
+        <span>System Administrator (ADMIN)</span>
       </div>
-      <!-- Logged-in state -->
-      <div id="navLoggedIn" class="hidden flex gap-12">
-        <div class="notif-wrapper">
-          <button class="notif-bell-btn" id="notifBellBtn" title="Notifications">
-            🔔
-            <span class="notif-count-badge hidden" id="notifCountBadge">0</span>
-          </button>
-          <div class="notif-dropdown" id="notifDropdown">
-            <div class="notif-dropdown-head">
-              <span>Notifications</span>
-              <a href="#" id="markAllReadBtn">Mark all read</a>
-            </div>
-            <div class="notif-list" id="notifList"></div>
-          </div>
-        </div>
-        <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
-      </div>
+      <button class="btn-logout" onclick="alert('Logging out of Admin Panel session.')">Logout</button>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu">☰</button>
     </div>
   </nav>
 
-  <main class="page-content" id="view-dashboard">
-    <!-- Sidebar -->
-    <div class="dashboard-sidebar">
-      <div class="dash-profile-avatar" style="background:var(--red);">A</div>
-      <div class="dash-profile-name">NexUse Admin</div>
-      <div class="dash-profile-role">System Administrator</div>
-      <div class="dash-profile-rating" style="color:var(--text-secondary);">Oversight &amp; Moderation</div>
+  <!-- MAIN APP LAYOUT -->
+  <div id="admin-app">
 
+    <!-- LEFT SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="dash-profile-card">
+        <div class="dash-profile-avatar">
+          <svg viewBox="0 0 24 24"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/></svg>
+        </div>
+        <div>
+          <div class="dash-profile-name">System Administrator</div>
+          <div class="dash-profile-role">SYSTEM ADMINISTRATOR</div>
+        </div>
+      </div>
+
+      <!-- 6 CRUD NAVIGATION MENU -->
       <nav class="dash-nav">
-        <a href="dashboard.html" class="dash-nav-item">👤 Back to Dashboard</a>
-        <button class="dash-nav-item active" id="dashTab-admin">🛡️ Administrator Desk</button>
+        <button class="dash-nav-btn active" data-target="view-users">
+          <div class="nav-left"><span class="nav-icon">👥</span> User Management</div>
+          <span class="count-badge" id="badge-users-count">6</span>
+        </button>
+
+        <button class="dash-nav-btn" data-target="view-categories">
+          <div class="nav-left"><span class="nav-icon">📁</span> Categories CRUD</div>
+          <span class="count-badge" id="badge-categories-count">6</span>
+        </button>
+
+        <button class="dash-nav-btn" data-target="view-listings">
+          <div class="nav-left"><span class="nav-icon">🛍️</span> Listings Moderation</div>
+          <span class="count-badge" id="badge-listings-count">6</span>
+        </button>
+
+        <button class="dash-nav-btn" data-target="view-disputes">
+          <div class="nav-left"><span class="nav-icon">⚖️</span> Disputes & Complaints</div>
+          <span class="count-badge" id="badge-disputes-count">1</span>
+        </button>
+
+        <button class="dash-nav-btn" data-target="view-notifications">
+          <div class="nav-left"><span class="nav-icon">📢</span> System Notifications</div>
+          <span class="count-badge" id="badge-notifs-count">2</span>
+        </button>
+
+        <button class="dash-nav-btn" data-target="view-analytics">
+          <div class="nav-left"><span class="nav-icon">📊</span> Reports & Analytics</div>
+          <span class="count-badge" style="background:#147966;color:#fff;">Live</span>
+        </button>
       </nav>
+    </aside>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="admin-main">
+
+      <!-- PAGE TITLE & TOP ACTION -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Admin Command Dashboard</h1>
+          <p class="page-sub">Overview & Management of NexUse Platform Operations</p>
+        </div>
+        <button class="btn-broadcast-top" id="btn-broadcast-top">
+          <span>+</span> Send Broadcast Notification
+        </button>
+      </div>
+
+      <!-- 4 KPI STATS SUMMARY CARDS -->
+      <div class="stat-cards-grid">
+        <div class="stat-card">
+          <div class="stat-icon-wrapper stat-icon-users">👥</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-total-users">6</div>
+            <div class="stat-label">Total Registered Users</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper stat-icon-listings">📦</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-total-listings">6</div>
+            <div class="stat-label">Total Active Listings</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper stat-icon-disputes">⚖️</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-open-complaints">1</div>
+            <div class="stat-label">Open Complaints</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper stat-icon-integrity">📈</div>
+          <div class="stat-info">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">System Integrity</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================
+           1. USER ACCOUNTS CRUD VIEW
+           ===================================================== -->
+      <section id="view-users" class="crud-view-section">
+        <div class="crud-panel">
+          <div class="crud-panel-head">
+            <div>
+              <div class="crud-title">User Accounts CRUD</div>
+              <div class="crud-sub">Manage platform roles, account statuses, and credentials</div>
+            </div>
+            <div class="crud-actions">
+              <div class="search-input-wrapper">
+                <input type="text" id="search-users" placeholder="Search users...">
+              </div>
+              <button class="btn-add-crud" id="btn-add-user">+ Add User</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Full Name</th>
+                  <th>Username / Email</th>
+                  <th>Role</th>
+                  <th>City</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-users"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           2. PRODUCT CATEGORIES CRUD VIEW
+           ===================================================== -->
+      <section id="view-categories" class="crud-view-section hidden">
+        <div class="crud-panel">
+          <div class="crud-panel-head">
+            <div>
+              <div class="crud-title">Product Categories CRUD</div>
+              <div class="crud-sub">Manage item categories and marketplace taxonomies</div>
+            </div>
+            <div class="crud-actions">
+              <div class="search-input-wrapper">
+                <input type="text" id="search-categories" placeholder="Search categories...">
+              </div>
+              <button class="btn-add-crud" id="btn-add-category">+ Add New Category</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Category Name</th>
+                  <th>Slug</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-categories"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           3. LISTINGS MODERATION CRUD VIEW
+           ===================================================== -->
+      <section id="view-listings" class="crud-view-section hidden">
+        <div class="crud-panel">
+          <div class="crud-panel-head">
+            <div>
+              <div class="crud-title">Listings Moderation CRUD</div>
+              <div class="crud-sub">Review, approve, or flag resale, rental, and donation listings</div>
+            </div>
+            <div class="crud-actions">
+              <div class="search-input-wrapper">
+                <input type="text" id="search-listings" placeholder="Search listings...">
+              </div>
+              <button class="btn-add-crud" id="btn-add-listing">+ Create Listing</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Item Title</th>
+                  <th>Owner / Seller</th>
+                  <th>Category</th>
+                  <th>Price / Mode</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-listings"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           4. DISPUTES & COMPLAINTS CRUD VIEW
+           ===================================================== -->
+      <section id="view-disputes" class="crud-view-section hidden">
+        <div class="crud-panel">
+          <div class="crud-panel-head">
+            <div>
+              <div class="crud-title">Complaints & Dispute Resolution CRUD</div>
+              <div class="crud-sub">Track and resolve transaction disputes and user complaints</div>
+            </div>
+            <button class="btn-add-crud" id="btn-add-dispute">+ Log New Dispute</button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Subject</th>
+                  <th>Reporter ID</th>
+                  <th>Details</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-disputes"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           5. SYSTEM NOTIFICATIONS LOG CRUD VIEW
+           ===================================================== -->
+      <section id="view-notifications" class="crud-view-section hidden">
+        <div class="crud-panel">
+          <div class="crud-panel-head">
+            <div>
+              <div class="crud-title">System Notifications Log CRUD</div>
+              <div class="crud-sub">Manage broadcast announcements and automated platform alerts</div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Target User</th>
+                  <th>Title</th>
+                  <th>Message</th>
+                  <th>Type</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-notifications"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           6. REPORTS & ANALYTICS VIEW (CLEANED 3-BAR GRAPH)
+           ===================================================== -->
+      <section id="view-analytics" class="crud-view-section hidden">
+        <div class="crud-panel">
+          <div class="crud-title">Platform Performance & Circular Impact Analytics</div>
+          <div class="crud-sub">Analytical comparison breakdown of user activity, volume, and recirculation metrics</div>
+
+          <!-- COMPARISON GRAPH & PROGRESS GRID -->
+          <div class="analytics-grid">
+
+            <!-- GRAPH 1: TRANSACTION TYPE DISTRIBUTION (RESELL, RENT, DONATE) -->
+            <div class="chart-card">
+              <div class="chart-card-title">
+                <span>📊 Transaction Mode Distribution</span>
+                <span class="text-xs text-muted">This Month</span>
+              </div>
+              <div class="bar-graph-container">
+                <div class="bar-col">
+                  <div class="bar-fill bar-primary" style="height: 140px;">
+                    <span class="bar-value">52%</span>
+                  </div>
+                  <span class="bar-label">Resell</span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-fill bar-teal" style="height: 95px;">
+                    <span class="bar-value">32%</span>
+                  </div>
+                  <span class="bar-label">Rent</span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-fill bar-amber" style="height: 60px;">
+                    <span class="bar-value">16%</span>
+                  </div>
+                  <span class="bar-label">Donate</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- GRAPH 2: PROGRESS & IMPACT COMPARISON BARS -->
+            <div class="chart-card">
+              <div class="chart-card-title">
+                <span>📈 Progress & Recirculation Rate</span>
+                <span class="text-xs text-muted">Target vs Actual</span>
+              </div>
+              <div class="progress-list">
+                <div>
+                  <div class="progress-item-head">
+                    <span>Resource Utilization Rate</span>
+                    <span style="color:#0d9488;">84.5%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-bar-fill" style="width: 84.5%; background: #0d9488;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="progress-item-head">
+                    <span>User Satisfaction Rate</span>
+                    <span style="color:#1a5cff;">96.8%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-bar-fill" style="width: 96.8%; background: #1a5cff;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="progress-item-head">
+                    <span>Successful Meetup Fulfillment</span>
+                    <span style="color:#f59e0b;">91.2%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-bar-fill" style="width: 91.2%; background: #f59e0b;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="progress-item-head">
+                    <span>Dispute Resolution Speed</span>
+                    <span style="color:#8b5cf6;">100%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-bar-fill" style="width: 100%; background: #8b5cf6;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- GRAPH 3: REGIONAL VOLUME BREAKDOWN -->
+            <div class="chart-card" style="grid-column: span 2;">
+              <div class="chart-card-title">
+                <span>🗺️ Sri Lanka Regional Activity Comparison</span>
+                <span class="text-xs text-muted">Top 4 Regions</span>
+              </div>
+              <div class="progress-list" style="gap:14px;">
+                <div>
+                  <div class="progress-item-head">
+                    <span>Colombo (Western)</span>
+                    <span class="fw-800">1,420 Listings (42%)</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-bar-fill" style="width: 42%; background: linear-gradient(90deg, #1a5cff, #38bdf8);"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="progress-item-head">
+                    <span>Dehiwala / Mt. Lavinia</span>
+                    <span class="fw-800">890 Listings (26%)</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-bar-fill" style="width: 26%; background: linear-gradient(90deg, #0d9488, #34d399);"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="progress-item-head">
+                    <span>Kandy (Central)</span>
+                    <span class="fw-800">540 Listings (16%)</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-bar-fill" style="width: 16%; background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="progress-item-head">
+                    <span>Galle (Southern)</span>
+                    <span class="fw-800">320 Listings (10%)</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-bar-fill" style="width: 10%; background: linear-gradient(90deg, #8b5cf6, #c084fc);"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- =====================================================
+       MODALS
+       ===================================================== -->
+  
+  <!-- USER MODAL -->
+  <div class="modal-backdrop" id="modalUser">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span class="modal-head-title" id="modalUserTitle">Add New User Account</span>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formUser">
+        <input type="hidden" id="userId">
+        <div class="modal-body">
+          <div class="form-row">
+            <div>
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="userName" required>
+            </div>
+            <div>
+              <label class="form-label">Email (Read-only by Admin)</label>
+              <input type="email" class="form-control" id="userEmail" readonly required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="form-label">Username</label>
+              <input type="text" class="form-control" id="userUsername" required>
+            </div>
+            <div>
+              <label class="form-label">City / Region</label>
+              <input type="text" class="form-control" id="userCity" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Platform Role</label>
+            <select class="form-control" id="userRole">
+              <option value="ADMIN">ADMIN</option>
+              <option value="SELLER">SELLER</option>
+              <option value="BUYER">BUYER</option>
+              <option value="DONOR">DONOR</option>
+              <option value="RENTER">RENTER</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn-cancel">Cancel</button>
+          <button type="submit" class="btn-submit">Save User</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <div class="dash-main">
-      <div id="dashView-admin">
-        <div class="dash-page-title">Administrator Desk</div>
-        <div class="dash-page-sub">System analytics, user management, listings oversight, and disputes resolution.</div>
-
-        <div class="dash-stat-row">
-          <div class="dash-stat-card">
-            <div class="dash-stat-icon stat-blue">👥</div>
-            <div class="dash-stat-value" id="adminStatUsers">0</div>
-            <div class="dash-stat-label">Total Users</div>
+  <!-- CATEGORY MODAL -->
+  <div class="modal-backdrop" id="modalCategory">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span class="modal-head-title" id="modalCategoryTitle">Add New Category</span>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formCategory">
+        <input type="hidden" id="catId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Category Name</label>
+            <input type="text" class="form-control" id="catName" required>
           </div>
-          <div class="dash-stat-card">
-            <div class="dash-stat-icon stat-green">📋</div>
-            <div class="dash-stat-value" id="adminStatListings">0</div>
-            <div class="dash-stat-label">Active Listings</div>
+          <div class="form-group">
+            <label class="form-label">Slug</label>
+            <input type="text" class="form-control" id="catSlug" required>
           </div>
-          <div class="dash-stat-card">
-            <div class="dash-stat-icon stat-amber">🔁</div>
-            <div class="dash-stat-value" id="adminStatTxns">0</div>
-            <div class="dash-stat-label">Transactions</div>
-          </div>
-          <div class="dash-stat-card">
-            <div class="dash-stat-icon stat-purple">⚖️</div>
-            <div class="dash-stat-value" id="adminStatDisputes">0</div>
-            <div class="dash-stat-label">Open Disputes</div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" id="catDesc" required></textarea>
           </div>
         </div>
-
-        <!-- Chart -->
-        <div class="dash-panel-full">
-          <div class="dash-panel-title">📊 Transaction Type Distribution</div>
-          <div class="chart-bars" id="adminChart"></div>
+        <div class="modal-foot">
+          <button type="button" class="btn-cancel">Cancel</button>
+          <button type="submit" class="btn-submit">Save Category</button>
         </div>
+      </form>
+    </div>
+  </div>
 
-        <!-- Users Table -->
-        <div class="dash-panel-full">
-          <div class="flex-between mb-16">
-            <div class="dash-panel-title" style="margin-bottom:0;">👥 All Users</div>
+  <!-- LISTING MODAL -->
+  <div class="modal-backdrop" id="modalListing">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span class="modal-head-title" id="modalListingTitle">Create Marketplace Listing</span>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formListing">
+        <input type="hidden" id="listingId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Item Title</label>
+            <input type="text" class="form-control" id="listingItemTitle" required>
           </div>
-          <div style="overflow-x:auto;">
-            <table class="data-table">
-              <thead><tr>
-                <th>Name</th><th>Username</th><th>Role</th><th>Location</th><th>Rating</th><th>Verified</th><th>Actions</th>
-              </tr></thead>
-              <tbody id="adminUsersTable"></tbody>
-            </table>
+          <div class="form-row">
+            <div>
+              <label class="form-label">Owner / Seller Name</label>
+              <input type="text" class="form-control" id="listingOwner" required>
+            </div>
+            <div>
+              <label class="form-label">Available Category</label>
+              <select class="form-control" id="listingCategory" required></select>
+            </div>
           </div>
-        </div>
-
-        <!-- Disputes Table -->
-        <div class="dash-panel-full">
-          <div class="dash-panel-title mb-16">⚖️ Disputes &amp; Complaints</div>
-          <div style="overflow-x:auto;">
-            <table class="data-table">
-              <thead><tr>
-                <th>ID</th><th>Filed By</th><th>Against</th><th>Reason</th><th>Status</th><th>Actions</th>
-              </tr></thead>
-              <tbody id="adminDisputesTable"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Broadcast -->
-        <div class="dash-panel-full" style="max-width:520px;">
-          <div class="dash-panel-title">📢 System Broadcast</div>
-          <form id="adminBroadcastForm">
-            <div class="form-group">
-              <label class="form-label">Target Audience</label>
-              <select class="form-control" id="broadcastTarget">
-                <option value="all">All Users</option>
-                <option value="buyer">Buyers</option>
-                <option value="seller">Sellers</option>
-                <option value="lender">Lenders</option>
-                <option value="renter">Renters</option>
+          <div class="form-row">
+            <div>
+              <label class="form-label">Price / Listing Mode</label>
+              <input type="text" class="form-control" id="listingPrice" required placeholder="e.g. LKR 50,000 or FREE">
+            </div>
+            <div>
+              <label class="form-label">Status</label>
+              <select class="form-control" id="listingStatus">
+                <option value="APPROVED">APPROVED</option>
+                <option value="PENDING">PENDING</option>
+                <option value="FLAGGED">FLAGGED</option>
               </select>
             </div>
-            <div class="form-group">
-              <label class="form-label">Title</label>
-              <input type="text" class="form-control" id="broadcastTitle" placeholder="Announcement title" required>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn-cancel">Cancel</button>
+          <button type="submit" class="btn-submit">Save Listing</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DISPUTE MODAL -->
+  <div class="modal-backdrop" id="modalDispute">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span class="modal-head-title">Log New Complaint / Dispute</span>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formDispute">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Complaint Subject</label>
+            <input type="text" class="form-control" id="dspSubject" required placeholder="e.g. Item condition discrepancy">
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="form-label">Reporter User ID / Username</label>
+              <input type="text" class="form-control" id="dspReporter" required placeholder="e.g. User #4 or buyer1">
             </div>
-            <div class="form-group">
-              <label class="form-label">Message</label>
-              <textarea class="form-control" id="broadcastMsg" placeholder="Write your system message…" required></textarea>
+            <div>
+              <label class="form-label">Initial Status</label>
+              <select class="form-control" id="dspStatus">
+                <option value="OPEN">OPEN</option>
+                <option value="RESOLVED">RESOLVED</option>
+                <option value="DISMISSED">DISMISSED</option>
+              </select>
             </div>
-            <button type="submit" class="btn btn-primary btn-md">Send Broadcast</button>
-          </form>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dispute Details & Evidence Notes</label>
+            <textarea class="form-control" id="dspDetails" required placeholder="Describe the dispute details and reported issue..."></textarea>
+          </div>
         </div>
-      </div>
+        <div class="modal-foot">
+          <button type="button" class="btn-cancel">Cancel</button>
+          <button type="submit" class="btn-submit">Log Dispute</button>
+        </div>
+      </form>
     </div>
-  </main>
+  </div>
 
-  <!-- MODALS -->
-  <!-- Admin Resolve Dispute Modal -->
-  <dialog class="modal" id="resolveDisputeModal">
-    <div class="modal-header">
-      <span class="modal-title">Resolve Dispute</span>
-      <button class="modal-close-btn" onclick="document.getElementById('resolveDisputeModal').close()">&times;</button>
+  <!-- BROADCAST NOTIFICATION MODAL -->
+  <div class="modal-backdrop" id="modalBroadcast">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span class="modal-head-title">Send Broadcast Notification</span>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formBroadcast">
+        <div class="modal-body">
+          <div class="form-row">
+            <div>
+              <label class="form-label">Target Audience</label>
+              <select class="form-control" id="bcTarget">
+                <option value="ALL">All Users</option>
+                <option value="SELLER">Sellers Only</option>
+                <option value="BUYER">Buyers Only</option>
+                <option value="RENTER">Renters Only</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Notice Type</label>
+              <select class="form-control" id="bcType">
+                <option value="INFO">INFO</option>
+                <option value="SUCCESS">SUCCESS</option>
+                <option value="WARNING">WARNING</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-control" id="bcTitle" required placeholder="Announcement title">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message Content</label>
+            <textarea class="form-control" id="bcMessage" required placeholder="Write broadcast message..."></textarea>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn-cancel">Cancel</button>
+          <button type="submit" class="btn-submit">Dispatch Broadcast</button>
+        </div>
+      </form>
     </div>
-    <form id="resolveDisputeForm">
-      <input type="hidden" id="rdspId">
-      <div class="modal-body">
-        <div style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:16px;">
-          <div class="text-xs text-muted fw-700" style="margin-bottom:4px;">COMPLAINT</div>
-          <div id="rdspReason" style="font-weight:700;margin-bottom:6px;"></div>
-          <div id="rdspDesc" style="font-size:0.85rem;color:var(--text-secondary);"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Resolution Action</label>
-          <select class="form-control" id="rdspAction" required>
-            <option value="Warning issued to reported user">Warning issued to reported user</option>
-            <option value="Penalty charged to renter">Penalty charged to renter</option>
-            <option value="Item verified returned in good condition">Item verified returned in good condition</option>
-            <option value="Dismissed – insufficient evidence">Dismissed – insufficient evidence</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Notes</label>
-          <textarea class="form-control" id="rdspNotes" placeholder="Record resolution details…" required></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline btn-md" onclick="document.getElementById('resolveDisputeModal').close()">Cancel</button>
-        <button type="submit" class="btn btn-green btn-md">Confirm Resolution</button>
-      </div>
-    </form>
-  </dialog>
+  </div>
 
-  <!-- Admin Edit User Modal -->
-  <dialog class="modal" id="adminEditUserModal">
-    <div class="modal-header">
-      <span class="modal-title">Moderate User</span>
-      <button class="modal-close-btn" onclick="document.getElementById('adminEditUserModal').close()">&times;</button>
-    </div>
-    <form id="adminEditUserForm">
-      <input type="hidden" id="aeUserId">
-      <div class="modal-body">
-        <div class="form-row">
-          <div>
-            <label class="form-label">Full Name</label>
-            <input type="text" class="form-control" id="aeName" required>
-          </div>
-          <div>
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" id="aeEmail" required>
-          </div>
-        </div>
-        <div class="form-row">
-          <div>
-            <label class="form-label">Rating (1–5)</label>
-            <input type="number" class="form-control" id="aeRating" min="1" max="5" step="0.1" required>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;padding-top:26px;">
-            <input type="checkbox" id="aeVerified" style="width:18px;height:18px;accent-color:var(--green);">
-            <label for="aeVerified" style="font-weight:600;font-size:0.85rem;cursor:pointer;">Account Verified</label>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline btn-md" onclick="document.getElementById('adminEditUserModal').close()">Cancel</button>
-        <button type="submit" class="btn btn-primary btn-md">Save Changes</button>
-      </div>
-    </form>
-  </dialog>
+  <!-- TOAST ALERTS CONTAINER -->
+  <div id="toast-container"></div>
 
+  <script src="assets/js/admin.js"></script>
 </body>
 </html>
