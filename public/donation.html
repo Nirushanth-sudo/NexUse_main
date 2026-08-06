@@ -60,6 +60,22 @@
       <h1>Support Your Neighbors</h1>
       <p>Browse community donation needs or create a request if you need support with essential items.</p>
 
+      <!-- Community Stats Counter Row -->
+      <div class="hero-stats-row">
+        <div class="stat-badge">
+          <span class="stat-num" id="statActiveRequests">0</span>
+          <span class="stat-label">Active Needs</span>
+        </div>
+        <div class="stat-badge">
+          <span class="stat-num" id="statTotalPledges">0</span>
+          <span class="stat-label">Pledges Fulfilled</span>
+        </div>
+        <div class="stat-badge">
+          <span class="stat-num" id="statNeighborsHelped">0</span>
+          <span class="stat-label">Neighbors Helped</span>
+        </div>
+      </div>
+
       <!-- Guest / Logged-out state -->
       <a href="login.html" class="btn btn-primary btn-md" id="donPageSignInBtn">Sign In to Request Item</a>
       <!-- Authenticated / Logged-in state -->
@@ -96,7 +112,7 @@
             </label>
             <label class="filter-pill-label">
               <input type="checkbox" value="Clothing">
-              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>-->  Clothing</span>
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Clothing</span>
             </label>
             <label class="filter-pill-label">
               <input type="checkbox" value="Tools">
@@ -125,30 +141,34 @@
           <span class="reset-icon">↺</span> RESET ALL FILTERS
         </button>
       </aside>
-    
+
       <div class="donation-main">
-          <div class="donation-controls">
-            <button class="btn btn-outline btn-md mobile-filter-btn" id="donMobileFilterBtn">
-              <svg class="icon-filter" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-              </svg>
-              Filters
-            </button>
-          </div>
-          <div class="donation-cards-grid" id="donCardsGrid">
-              <!-- dynamic donation cards -->
-          </div>
+        <div class="donation-controls">
+          <button class="btn btn-outline btn-md mobile-filter-btn" id="donMobileFilterBtn">
+            <svg class="icon-filter" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            Filters
+          </button>
+        </div>
+        <div class="donation-cards-grid" id="donCardsGrid">
+          <!-- dynamic donation cards -->
+        </div>
       </div>
     </div>
   </main>
 
   <dialog class="modal" id="donationReqModal">
-    <div class="modal-header">
-      <span class="modal-title" id="drModalTitle">Create Donation Request</span>
+    <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: var(--primary);">📝</div>
+        <span class="modal-title" id="drModalTitle" style="font-size: 1.2rem; font-weight: 800;">Create Donation Request</span>
+      </div>
       <button class="modal-close-btn" onclick="document.getElementById('donationReqModal').close()">&times;</button>
     </div>
     <form id="donationReqForm">
-      <div class="modal-body">
+      <div class="modal-body" style="padding-top: 12px;">
         <div class="form-group">
           <label class="form-label">What do you need *</label>
           <input type="text" class="form-control" id="drTitle" placeholder="e.g. Laptops for Kids Charity Program"
@@ -198,9 +218,15 @@
             </select>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Item Needed (specific type) *</label>
-          <input type="text" class="form-control" id="drItemType" placeholder="e.g. LAPTOPS / TABLETS" required>
+        <div class="form-row">
+          <div>
+            <label class="form-label">Item Needed (specific type) *</label>
+            <input type="text" class="form-control" id="drItemType" placeholder="e.g. LAPTOPS / TABLETS" required>
+          </div>
+          <div>
+            <label class="form-label">Quantity Required *</label>
+            <input type="number" class="form-control" id="drQuantity" min="1" placeholder="e.g. 5" required>
+          </div>
         </div>
         <div class="form-group">
           <label class="form-label">Explain your need *</label>
@@ -209,11 +235,14 @@
         </div>
         <div class="form-group">
           <label class="form-label">Attach Proof / Documents / Images (Optional)</label>
-          <input type="file" class="form-control" id="drProof" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt"
-            style="border: 1px dashed #cbd5e1; padding: 6px 12px; height: auto;">
-          <small style="color: var(--text-secondary); font-size: 0.72rem; display: block; margin-top: 4px;">
-            Allowed types: Images (JPG, PNG, GIF), PDF, Word (DOC, DOCX), Text (TXT). Max 5MB.
-          </small>
+          <div class="file-upload-wrapper">
+            <input type="file" id="drProof" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt">
+            <div class="file-upload-box">
+              <span class="upload-icon">📤</span>
+              <span class="upload-text">Drag &amp; drop files or <span class="upload-link">browse</span></span>
+              <span class="upload-info">PDF, Images, Word, Text (Max 5MB)</span>
+            </div>
+          </div>
           <div id="drCurrentProofInfo"
             style="font-size:0.78rem; margin-top:8px; color:var(--text-secondary); display:none;"></div>
           <div class="flex items-center gap-8" id="drRemoveProofGroup" style="display: none; margin-top: 8px;">
@@ -226,7 +255,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-outline btn-md"
           onclick="document.getElementById('donationReqModal').close()">Cancel</button>
-        <button type="submit" class="btn btn-green btn-md" id="drSubmitBtn">Post Request</button>
+        <button type="submit" class="btn btn-primary btn-md" id="drSubmitBtn">Post Request</button>
       </div>
     </form>
   </dialog>
@@ -238,43 +267,86 @@
       <button class="modal-close-btn" id="dCloseBtn">&times;</button>
     </div>
     <div class="modal-body">
-      <div class="detail-modal-image-area" id="dImageArea" style="height:180px; position:relative; overflow:hidden; border-radius:var(--radius-md); background:var(--bg); margin-bottom:16px;">
+      <div class="detail-modal-image-area" id="dImageArea"
+        style="height:180px; position:relative; overflow:hidden; border-radius:var(--radius-md); background:var(--bg); margin-bottom:16px;">
         <img id="dCoverImage" src="" alt="Category Image" style="width:100%; height:100%; object-fit:cover;">
         <span style="position:absolute;top:12px;left:12px;" id="dBadge"></span>
       </div>
-      <div class="detail-meta-grid" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-bottom:16px; background:var(--bg); padding:12px; border-radius:var(--radius-sm);">
+      <div class="detail-meta-grid"
+        style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:16px; background:var(--bg); padding:12px; border-radius:var(--radius-sm);">
         <div class="detail-meta-item">
-          <div class="detail-meta-label" style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:700;">Location</div>
-          <div class="detail-meta-value" id="dLocation" style="font-size:0.85rem; font-weight:600; color:var(--text); margin-top:2px;">-</div>
+          <div class="detail-meta-label"
+            style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:700;">
+            Location</div>
+          <div class="detail-meta-value" id="dLocation"
+            style="font-size:0.85rem; font-weight:600; color:var(--text); margin-top:2px;">-</div>
         </div>
         <div class="detail-meta-item">
-          <div class="detail-meta-label" style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:700;">Specific Item</div>
-          <div class="detail-meta-value" id="dItemType" style="font-size:0.85rem; font-weight:600; color:var(--text); margin-top:2px;">-</div>
+          <div class="detail-meta-label"
+            style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:700;">
+            Specific Item</div>
+          <div class="detail-meta-value" id="dItemType"
+            style="font-size:0.85rem; font-weight:600; color:var(--text); margin-top:2px;">-</div>
         </div>
         <div class="detail-meta-item">
-          <div class="detail-meta-label" style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:700;">Status</div>
-          <div class="detail-meta-value" id="dVerifiedStatus" style="font-size:0.85rem; font-weight:600; color:var(--text); margin-top:2px;">-</div>
+          <div class="detail-meta-label"
+            style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:700;">
+            Quantity</div>
+          <div class="detail-meta-value" id="dQuantityProgress"
+            style="font-size:0.85rem; font-weight:600; color:var(--text); margin-top:2px;">-</div>
+        </div>
+        <div class="detail-meta-item">
+          <div class="detail-meta-label"
+            style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:700;">
+            Status</div>
+          <div class="detail-meta-value" id="dVerifiedStatus"
+            style="font-size:0.85rem; font-weight:600; color:var(--text); margin-top:2px;">-</div>
         </div>
       </div>
-      
+
+      <!-- Detail Modal Progress Bar -->
+      <div class="donation-progress-container" id="dProgressContainer"
+        style="margin-bottom: 20px; background: var(--bg); padding: 12px; border-radius: var(--radius-sm);">
+        <div class="donation-progress-labels">
+          <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Pledge Progress</span>
+          <span id="dProgressText" style="font-size: 0.78rem; font-weight: 700; color: var(--green);">0 / 0
+            pledged</span>
+        </div>
+        <div class="donation-progress-bar" style="background: #e2e8f0;">
+          <div class="donation-progress-fill" id="dProgressFill" style="width: 0%;"></div>
+        </div>
+      </div>
+
       <div style="margin-bottom:20px; border-bottom:1px solid var(--border-light); padding-bottom:16px;">
-        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:6px;font-weight:700;">Explain Need</div>
-        <p id="dDescription" style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;white-space:pre-wrap;"></p>
+        <div
+          style="font-size:0.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:6px;font-weight:700;">
+          Explain Need</div>
+        <p id="dDescription"
+          style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;white-space:pre-wrap;"></p>
       </div>
 
       <!-- Proof document area -->
-      <div id="dProofArea" class="hidden" style="margin-bottom:20px; border-bottom:1px solid var(--border-light); padding-bottom:16px;">
-        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:8px;font-weight:700;">Verified Proof &amp; Documents</div>
+      <div id="dProofArea" class="hidden"
+        style="margin-bottom:20px; border-bottom:1px solid var(--border-light); padding-bottom:16px;">
+        <div
+          style="font-size:0.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:8px;font-weight:700;">
+          Verified Proof &amp; Documents</div>
         <div id="dProofLinkContainer"></div>
       </div>
 
       <!-- Requester trust info box -->
-      <div class="modal-trust-box" style="background:#f8fafc; padding:16px; border:1px solid var(--border); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:space-between; gap:16px;">
-        <a id="dRequesterLink" href="" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; flex:1;">
-          <div id="dRequesterAvatar" class="donor-info-avatar" style="width:44px; height:44px; font-size:1.1rem; border-radius:50%; background:linear-gradient(135deg, var(--primary-light) 0%, #dbeafe 100%); color:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700;">-</div>
+      <div class="modal-trust-box"
+        style="background:#f8fafc; padding:16px; border:1px solid var(--border); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:space-between; gap:16px;">
+        <a id="dRequesterLink" href=""
+          style="display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; flex:1;">
+          <div id="dRequesterAvatar" class="donor-info-avatar"
+            style="width:44px; height:44px; font-size:1.1rem; border-radius:50%; background:linear-gradient(135deg, var(--primary-light) 0%, #dbeafe 100%); color:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700;">
+            -</div>
           <div>
             <div style="font-size:0.88rem; font-weight:700; color:var(--text);" id="dRequesterName">-</div>
-            <div style="font-size:0.8rem; color:var(--text-secondary); display:flex; align-items:center; gap:4px; margin-top:2px;" id="dRequesterStars">
+            <div
+              style="font-size:0.8rem; color:var(--text-secondary); display:flex; align-items:center; gap:4px; margin-top:2px;"
+              id="dRequesterStars">
               ⭐ - <span style="font-weight:500; font-size:0.72rem;">(Rating)</span>
             </div>
           </div>
@@ -288,7 +360,62 @@
     </div>
   </dialog>
 
+  <!-- Pledge Item Dialog Modal -->
+  <dialog class="modal" id="pledgeModal">
+    <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div
+          style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: var(--primary);">
+          💝</div>
+        <span class="modal-title" style="font-size: 1.2rem; font-weight: 800;">Make a Pledge</span>
+      </div>
+      <button class="modal-close-btn" onclick="document.getElementById('pledgeModal').close()">&times;</button>
+    </div>
+    <form id="pledgeForm">
+      <div class="modal-body" style="padding-top: 12px;">
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 20px;">
+          Pledging items helps support your neighbors. Please enter details about what you can donate and optionally
+          upload proof.
+        </p>
+        <div class="form-group">
+          <label class="form-label">What can you do for this request? *</label>
+          <textarea class="form-control" id="plNote" placeholder="e.g. I can drop off 2 books next Saturday afternoon."
+            required style="height: 90px; resize: none;"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Attach Proof of Donation Capability (Optional)</label>
+          <div class="file-upload-wrapper">
+            <input type="file" id="plProof" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt">
+            <div class="file-upload-box">
+              <span class="upload-icon">📤</span>
+              <span class="upload-text">Drag &amp; drop files or <span class="upload-link">browse</span></span>
+              <span class="upload-info">PDF, Images, Word, Text (Max 5MB)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-md"
+          onclick="document.getElementById('pledgeModal').close()">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-md" id="plSubmitBtn">Submit Pledge</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Pledge Success Modal -->
+  <dialog class="modal" id="pledgeSuccessModal" style="max-width: 440px; text-align: center; border-radius: var(--radius-xl);">
+    <div class="modal-body" style="padding: 36px 28px;">
+      <div class="success-checkmark-circle">✓</div>
+      <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">Pledge Submitted!</h3>
+      <p style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin-bottom: 24px;">
+        Thank you for your generosity! Your offer of help has been sent to the requester.
+      </p>
+      <button class="btn btn-primary btn-md" id="plSuccessCloseBtn" onclick="document.getElementById('pledgeSuccessModal').close()" style="width: 100%; justify-content: center; font-weight: 700; box-shadow: 0 4px 12px rgba(26, 92, 255, 0.25);">Great, close</button>
+    </div>
+  </dialog>
+
   <script src="assets/JS/common.js"></script>
   <script src="assets/JS/donation.js"></script>
 </body>
+
 </html>
