@@ -3,157 +3,224 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NexUse – Turn Underused Items Into Value</title>
-  <meta name="description" content="NexUse connects community members to resell, rent, share, or donate underused items.">
-  <link rel="stylesheet" href="public/styles.css">
+  <title>NexUse Sustainable Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="#marketplace" aria-label="NexUse marketplace home">
+        <span class="material-symbols-outlined brand__icon" aria-hidden="true">shopping_cart</span>
+        <span class="brand__name">NexUse</span>
+      </a>
 
-  <!-- GLOBAL NAVBAR -->
-  <nav class="navbar" id="mainNavbar">
-    <a href="public/index.html" class="navbar-brand" id="navBrand">
-      <svg class="navbar-brand-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 22h8l10 26h28l8-18H30" stroke="#1a5cff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="36" cy="60" r="6" fill="#1a5cff"/>
-        <circle cx="60" cy="60" r="6" fill="#1a5cff"/>
-        <path d="M48 38c-3-5-10-5-13 0-2.5 4 0 10 6 14l7 5 7-5c6-4 8.5-10 6-14-3-5-10-5-13 0z" fill="#12b76a"/>
-      </svg>
-      <span><span class="nex">Nex</span><span class="use">Use</span></span>
-    </a>
+      <label class="search" for="searchInput">
+        <span class="material-symbols-outlined" aria-hidden="true">search</span>
+        <input id="searchInput" type="search" placeholder="Search for resources..." autocomplete="off">
+        <button class="icon-button search__tune" type="button" data-scroll-to-filters aria-label="Show filters">
+          <span class="material-symbols-outlined" aria-hidden="true">tune</span>
+        </button>
+      </label>
 
-    <ul class="navbar-links" id="navLinks">
-      <li><a href="public/index.html" id="nav-home">Home</a></li>
-      <li><a href="public/marketplace.html" id="nav-marketplace">Marketplace</a></li>
-      <li><a href="public/donation.html" id="nav-donation-requests">Donation Requests</a></li>
-      <li id="nav-dashboard-li" class="hidden"><a href="public/dashboard.html" id="nav-dashboard">Dashboard</a></li>
-    </ul>
+      <nav class="nav nav--desktop" aria-label="Main navigation">
+        <a class="nav__link is-active" href="#marketplace" data-nav-link>Marketplace</a>
+        <a class="nav__link" href="#impact" data-nav-link>Impact</a>
+        <a class="nav__link" href="#community" data-nav-link>Community</a>
+        <a class="nav__link" href="#about" data-nav-link>About</a>
+      </nav>
 
-    <div class="navbar-actions" id="navActions">
-      <!-- Logged-out state -->
-      <div id="navLoggedOut" class="flex gap-8">
-        <a href="public/login.html" class="btn btn-outline btn-sm">Sign In</a>
-        <a href="public/register.html" class="btn btn-primary btn-sm">Register</a>
+      <div class="topbar__actions">
+        <button class="icon-button" type="button" aria-label="Messages">
+          <span class="material-symbols-outlined" aria-hidden="true">chat_bubble</span>
+        </button>
+        <button class="icon-button" type="button" aria-label="Notifications">
+          <span class="material-symbols-outlined" aria-hidden="true">notifications</span>
+        </button>
+        <button class="profile-button" type="button" aria-label="Profile">
+          <span class="material-symbols-outlined" aria-hidden="true">person</span>
+        </button>
       </div>
-      <!-- Logged-in state -->
-      <div id="navLoggedIn" class="hidden flex gap-12">
-        <div class="notif-wrapper">
-          <button class="notif-bell-btn" id="notifBellBtn" title="Notifications">
-            🔔
-            <span class="notif-count-badge hidden" id="notifCountBadge">0</span>
-          </button>
-          <div class="notif-dropdown" id="notifDropdown">
-            <div class="notif-dropdown-head">
-              <span>Notifications</span>
-              <a href="#" id="markAllReadBtn">Mark all read</a>
-            </div>
-            <div class="notif-list" id="notifList"></div>
-          </div>
-        </div>
-        <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
-      </div>
+
+      <button class="icon-button menu-button" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+        <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+      </button>
     </div>
-  </nav>
 
-  <!-- PAGE CONTENT -->
-  <main class="page-content" id="view-home">
-    <!-- Hero -->
-    <section class="hero">
-      <div class="hero-text">
-        <h1 class="hero-heading">
-          Turn Underused Items<br>
-          Into <span class="highlight-blue">Value</span> &amp; <span class="highlight-green">Sustainability</span>
-        </h1>
-        <p class="hero-description">
-          NexUse connects community members to resell, rent, share, or donate items that would otherwise collect dust. Reduce waste, save money, and build connection.
+    <nav class="nav nav--mobile" id="mobileNav" aria-label="Mobile navigation">
+      <a class="nav__link is-active" href="#marketplace" data-nav-link>Marketplace</a>
+      <a class="nav__link" href="#impact" data-nav-link>Impact</a>
+      <a class="nav__link" href="#community" data-nav-link>Community</a>
+      <a class="nav__link" href="#about" data-nav-link>About</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="marketplace">
+      <div class="hero__media" aria-hidden="true"></div>
+      <div class="hero__shade" aria-hidden="true"></div>
+      <div class="hero__content">
+        <span class="hero__badge">
+          <span class="material-symbols-outlined" aria-hidden="true">eco</span>
+          Circular Economy Initiative
+        </span>
+        <h1>The Marketplace for <span class="hero__accent">Pre-owned Quality</span></h1>
+        <p>
+          Join the circular economy in Sri Lanka. Buy, sell, or rent high-quality
+          second-hand goods within your community. Sustainable, smart, and community-driven.
         </p>
-        <div class="hero-cta">
-          <a href="public/marketplace.html" class="btn btn-primary btn-lg">Browse Marketplace</a>
-          <a href="public/donation.html" class="btn btn-green btn-lg">Donate Items</a>
-        </div>
-      </div>
-
-      <div class="hero-card">
-        <div class="hero-card-logo">
-          <svg width="90" height="90" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16 22h8l10 26h28l8-18H30" stroke="#1a5cff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="36" cy="60" r="6" fill="#1a5cff"/>
-            <circle cx="60" cy="60" r="6" fill="#1a5cff"/>
-            <path d="M48 38c-3-5-10-5-13 0-2.5 4 0 10 6 14l7 5 7-5c6-4 8.5-10 6-14-3-5-10-5-13 0z" fill="#12b76a"/>
-          </svg>
-          <div style="text-align:center;margin-top:8px;">
-            <span style="font-size:1.4rem;font-weight:800;"><span style="color:#1a5cff;">Nex</span><span style="color:#12b76a;">Use</span></span>
-            <div style="font-size:0.65rem;color:#94a3b8;letter-spacing:0.25em;margin-top:2px;">SELL · RENT · DONATE</div>
-          </div>
-        </div>
-        <div class="hero-stats">
-          <div class="hero-stat-item">
-            <div class="hero-stat-value" id="homeStatItems">32</div>
-            <div class="hero-stat-label">Items Circulating</div>
-          </div>
-          <div class="hero-stat-item">
-            <div class="hero-stat-value" id="homeStatMembers">155</div>
-            <div class="hero-stat-label">Community Members</div>
-          </div>
+        <div class="hero__actions">
+          <a class="button button--light" href="#items">
+            Explore Items
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </a>
+          <button class="button button--primary" type="button" id="howItWorksButton">
+            <span class="material-symbols-outlined" aria-hidden="true">play_circle</span>
+            How it Works
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- Why circular consumption matters -->
-    <div class="why-section">
-      <h2 class="section-heading">Why Circular Consumption Matters</h2>
-      <p class="section-sub">Households use only 20–30% of what they own. NexUse helps circulate the rest.</p>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon" style="background:#eef4ff;">♻️</div>
-          <h3>Reduce Waste</h3>
-          <p>Give idle items a second life and keep them out of landfills by connecting with your local community.</p>
+    <section class="marketplace" id="items">
+      <div class="marketplace__inner">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Marketplace</p>
+            <h2>Browse circular resources</h2>
+          </div>
+          <div class="view-controls" aria-label="Marketplace view controls">
+            <select id="sortSelect" aria-label="Sort items">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: low to high</option>
+              <option value="price-high">Price: high to low</option>
+              <option value="newest">Newest</option>
+            </select>
+            <div class="segmented" aria-label="Choose view">
+              <button class="segmented__button is-active" type="button" data-view="grid" aria-label="Grid view">
+                <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
+              </button>
+              <button class="segmented__button" type="button" data-view="list" aria-label="List view">
+                <span class="material-symbols-outlined" aria-hidden="true">view_agenda</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background:#e8f5ec;">💰</div>
-          <h3>Save Money</h3>
-          <p>Access tools, electronics, and furniture at a fraction of retail price through rentals and resales.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background:#fff8ec;">🤝</div>
-          <h3>Build Community</h3>
-          <p>Strengthen social bonds by sharing resources and supporting neighbours through donations.</p>
-        </div>
-      </div>
-    </div>
 
-    <!-- How it works -->
-    <div class="why-section" style="background:#f8fafc;">
-      <h2 class="section-heading">How It Works</h2>
-      <p class="section-sub">Three simple steps to start circulating resources.</p>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon" style="background:#f3f0ff;">📸</div>
-          <h3>1. List Your Item</h3>
-          <p>Create a listing with photos, condition details, and set it as For Sale, For Rent, or Free Donation.</p>
+        <div class="filters" id="filters" aria-label="Filter listings by exchange type">
+          <button class="filter-chip is-active" type="button" data-filter="all">
+            <span class="material-symbols-outlined" aria-hidden="true">check</span>
+            All
+          </button>
+          <button class="filter-chip" type="button" data-filter="donate">Donate</button>
+          <button class="filter-chip" type="button" data-filter="resell">Resell</button>
+          <button class="filter-chip" type="button" data-filter="rent">Rent</button>
+          <button class="filter-chip" type="button" data-filter="share">Share</button>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background:#eef4ff;">🔍</div>
-          <h3>2. Connect &amp; Agree</h3>
-          <p>Buyers, renters, and donors browse listings, send requests, and communicate via built-in messaging.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background:#e8f5ec;">✅</div>
-          <h3>3. Exchange &amp; Rate</h3>
-          <p>Complete the exchange on your terms, confirm returns for rentals, and leave ratings for transparency.</p>
-        </div>
-      </div>
-    </div>
 
-    <!-- CTA Banner -->
-    <div class="cta-section">
-      <h2>Ready to Reduce Waste Together?</h2>
-      <p>Join thousands of community members already sharing resources on NexUse.</p>
-      <a href="public/register.html" class="btn btn-lg">Get Started – It's Free</a>
-    </div>
+        <div class="results-bar">
+          <span id="resultCount">4 resources available</span>
+          <button class="text-button" type="button" id="clearFiltersButton">Clear filters</button>
+        </div>
+
+        <div class="product-grid" id="productGrid" aria-live="polite"></div>
+      </div>
+    </section>
   </main>
 
-  <div id="toastContainer"></div>
+  <button class="fab" id="listItemButton" type="button">
+    <span class="material-symbols-outlined" aria-hidden="true">add</span>
+    List Item
+  </button>
 
-  <script src="js/common.js"></script>
+  <footer class="footer" id="about">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <span class="material-symbols-outlined brand__icon" aria-hidden="true">shopping_cart</span>
+          <p>Accelerating the circular economy through intelligent resource exchange and sustainable marketplace dynamics.</p>
+        </div>
+
+        <div class="footer__links">
+          <div>
+            <h3>Explore</h3>
+            <a href="#items">Resources</a>
+            <a href="#community">Sellers</a>
+            <a href="#impact">Impact Metrics</a>
+          </div>
+          <div id="community">
+            <h3>Community</h3>
+            <a href="#">Forum</a>
+            <a href="#">Events</a>
+            <a href="#">Case Studies</a>
+          </div>
+          <div>
+            <h3>Legal</h3>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom" id="impact">
+        <span>&copy; 2024 NexUse Sustainability. All rights reserved.</span>
+        <div>
+          <a href="#">LinkedIn</a>
+          <a href="#">Twitter</a>
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="gradient-strip" aria-hidden="true"></div>
+
+  <dialog class="modal" id="listModal" aria-labelledby="modalTitle">
+    <form class="modal__panel" method="dialog" id="listingForm">
+      <div class="modal__header">
+        <h2 id="modalTitle">List a resource</h2>
+        <button class="icon-button" type="button" id="closeModalButton" aria-label="Close dialog">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </div>
+
+      <label>
+        Item name
+        <input name="title" type="text" placeholder="Reusable office desk" required>
+      </label>
+
+      <label>
+        Exchange type
+        <select name="type" required>
+          <option value="donate">Donate</option>
+          <option value="resell">Resell</option>
+          <option value="rent">Rent</option>
+          <option value="share">Share</option>
+        </select>
+      </label>
+
+      <label>
+        Location
+        <input name="location" type="text" placeholder="Colombo 07" required>
+      </label>
+
+      <label>
+        Price or note
+        <input name="price" type="text" placeholder="Free, Rs. 2,000, or Co-op Share" required>
+      </label>
+
+      <button class="button button--primary modal__submit" type="submit">
+        <span class="material-symbols-outlined" aria-hidden="true">publish</span>
+        Publish Listing
+      </button>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="./script.js"></script>
 </body>
 </html>
