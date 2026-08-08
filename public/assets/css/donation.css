@@ -346,7 +346,8 @@ img {
   .navbar {
     padding: 0 16px;
     justify-content: space-between;
-    position: relative; /* Keeps absolute items positioned relative to nav */
+    position: relative;
+    /* Keeps absolute items positioned relative to nav */
   }
 
   .mobile-menu-toggle {
@@ -380,7 +381,8 @@ img {
     padding: 16px 24px;
     gap: 16px;
     box-shadow: var(--shadow-md);
-    z-index: 1000; /* Keeps menu above page elements */
+    z-index: 1000;
+    /* Keeps menu above page elements */
   }
 
   .navbar-links.mobile-open {
@@ -608,23 +610,121 @@ img {
    ===================================================== */
 
 .donation-page-hero {
-  background: linear-gradient(135deg, #f0faf5 0%, #edf6ff 100%);
-  padding: 52px 32px;
+  background: radial-gradient(circle at 10% 20%, rgba(219, 234, 254, 0.6) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(209, 250, 229, 0.5) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(254, 243, 199, 0.4) 0%, transparent 40%),
+    linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  padding: 56px 24px;
   text-align: center;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.donation-page-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(26, 92, 255, 0.02) 0%, transparent 60%);
+  pointer-events: none;
+  animation: rotateMesh 20s linear infinite;
+}
+
+@keyframes rotateMesh {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .donation-page-hero h1 {
-  font-size: 2rem;
+  font-size: 2.8rem;
   font-weight: 800;
-  margin-bottom: 10px;
-  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 70%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .donation-page-hero p {
-  color: var(--text-secondary);
-  font-size: 0.92rem;
+  color: #475569;
+  font-size: 1.05rem;
   margin-bottom: 24px;
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* Stats Badges */
+.hero-stats-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  margin: 20px auto;
+  max-width: 680px;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 16px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.stat-badge {
+  flex: 1;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 0;
+  min-width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.stat-badge:hover {
+  transform: translateY(-3px);
+}
+
+.stat-badge:not(:last-child) {
+  border-right: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.stat-num {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+#statActiveRequests {
+  color: var(--primary);
+}
+
+#statTotalPledges {
+  color: #8b5cf6;
+}
+
+#statNeighborsHelped {
+  color: var(--green);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 6px;
 }
 
 #view-donation-requests {
@@ -758,11 +858,12 @@ select.form-control {
 /* =============Sidebar Layout Container =====================*/
 /*============================================================*/
 .marketplace-sidebar {
-  width: 240px; /* Slightly wider to comfortably fit pill badges side-by-side */
+  width: 260px;
+  /* Slightly wider for cleaner grid/pills layout */
   flex-shrink: 0;
-  background: #fff;
-  border-right: 1px solid var(--border);
-  padding: 28px 20px;
+  background: #ffffff;
+  border-right: 1px solid var(--border-light);
+  padding: 32px 24px;
   height: calc(100vh - 60px);
   position: sticky;
   top: 60px;
@@ -770,23 +871,26 @@ select.form-control {
 }
 
 .sidebar-heading {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   margin-bottom: 24px;
   color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .sidebar-section {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
 .sidebar-section-title {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--text-secondary);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 /* Category Modern Filter Pills (Flex Wrap replacing vertical list) */
@@ -810,14 +914,15 @@ select.form-control {
 .filter-pill-text {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background-color: #f1f5f9; /* Soft grey tag background */
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 99px;
+  background-color: var(--border-light);
+  border: 1.5px solid transparent;
   color: var(--text-secondary);
-  font-size: 0.82rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .filter-pill-text:hover {
@@ -826,19 +931,21 @@ select.form-control {
 }
 
 /* Selected Pill Active State */
-.filter-pill-label input[type="checkbox"]:checked + .filter-pill-text {
-  background-color: var(--primary);
-  color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+.filter-pill-label input[type="checkbox"]:checked+.filter-pill-text {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 700;
+  box-shadow: var(--shadow-xs);
 }
 
 .check-icon {
   display: none;
   font-size: 0.75rem;
+  font-weight: 700;
 }
 
-.filter-pill-label input[type="checkbox"]:checked + .filter-pill-text .check-icon {
+.filter-pill-label input[type="checkbox"]:checked+.filter-pill-text .check-icon {
   display: inline-block;
 }
 
@@ -851,29 +958,35 @@ select.form-control {
 
 .custom-select-wrapper select {
   width: 100%;
-  appearance: none; /* Removes default OS dropdown arrow */
+  appearance: none;
+  /* Removes default OS dropdown arrow */
   -webkit-appearance: none;
   -moz-appearance: none;
   background-color: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px 14px 10px 36px; /* Extra left padding for pin icon */
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 11px 14px 11px 38px;
+  /* Extra left padding for pin icon */
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text);
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.2s ease;
+}
+
+.custom-select-wrapper select:hover {
+  border-color: var(--text-secondary);
 }
 
 .custom-select-wrapper select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1);
+  box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.12);
 }
 
 .location-icon {
   position: absolute;
-  left: 12px;
+  left: 14px;
   font-size: 0.9rem;
   color: var(--text-secondary);
   pointer-events: none;
@@ -889,32 +1002,40 @@ select.form-control {
   pointer-events: none;
 }
 
-/* Modern Reset Button (Text-link with icon layout) */
+/* Modern Reset Button (Outline card style) */
 .sidebar-btn-reset {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 6px;
-  background: transparent;
-  border: none;
-  padding: 0;
+  justify-content: center;
+  gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  margin-top: 12px;
+  letter-spacing: 0.04em;
+  margin-top: 16px;
 }
 
 .sidebar-btn-reset:hover {
-  opacity: 0.8;
-  transform: translateX(2px);
+  background: var(--border-light);
+  border-color: var(--text-secondary);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.sidebar-btn-reset:active {
+  transform: translateY(0);
 }
 
 .reset-icon {
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 /* Main Content Wrapper */
@@ -1202,6 +1323,7 @@ select.form-control {
   margin-bottom: 20px;
 }
 
+
 .mobile-filter-btn {
   display: none;
   align-items: center;
@@ -1273,12 +1395,92 @@ select.form-control {
 }
 
 @media (max-width: 768px) {
+
+  /* Hero Section Responsiveness */
+  .donation-page-hero {
+    padding: 32px 16px;
+  }
+
+  .donation-page-hero h1 {
+    font-size: 2rem;
+    letter-spacing: -0.03em;
+  }
+
+  .donation-page-hero p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+
+  .hero-stats-row {
+    margin: 16px 0 20px 0;
+    padding: 12px 0;
+    max-width: 100%;
+    gap: 0;
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  }
+
+  .stat-badge {
+    flex: 1;
+    min-width: auto;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .stat-badge:hover {
+    transform: none;
+  }
+
+  .stat-badge:not(:last-child) {
+    border-right: 1px solid rgba(15, 23, 42, 0.06);
+  }
+
+  .stat-num {
+    font-size: 1.6rem;
+  }
+
+  .stat-label {
+    font-size: 0.62rem;
+  }
+
+  /* Layout and main cards grid */
   .donation-layout {
     flex-direction: column;
   }
 
   .donation-main {
     padding: 20px 16px;
+  }
+
+  .donation-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Donation card footer stacking and full-width actions */
+  .donation-card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+
+  .donor-info-link {
+    justify-content: center;
+  }
+
+  .donation-card-actions {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .donation-card-actions button,
+  .donation-card-actions a.btn {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    text-align: center;
   }
 
   .donation-controls {
@@ -1329,16 +1531,75 @@ select.form-control {
     align-items: center !important;
   }
 
-  #donationDetailModal .modal-footer {
+  /* General Dialog/Modal responsiveness */
+  dialog.modal {
+    width: 94% !important;
+    max-height: 94vh !important;
+    border-radius: var(--radius-lg) !important;
+  }
+
+  .modal-header {
+    padding: 16px 20px !important;
+  }
+
+  .modal-body {
+    padding: 16px 20px !important;
+    max-height: 68vh !important;
+  }
+
+  .modal-footer {
     flex-direction: column !important;
     width: 100% !important;
     gap: 10px !important;
-    padding: 16px !important;
+    padding: 16px 20px !important;
   }
 
-  #donationDetailModal .modal-footer button {
+  .modal-footer .btn,
+  .modal-footer button {
     width: 100% !important;
     justify-content: center !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Make primary action buttons in modals larger on mobile */
+  #dActionBtn,
+  #drSubmitBtn,
+  #plSuccessCloseBtn {
+    padding: 14px 28px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Make success checkmark responsive on mobile */
+  .success-checkmark-circle {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 1.8rem !important;
+    margin-bottom: 16px !important;
+  }
+
+  #pledgeSuccessModal .modal-body {
+    padding: 24px 20px !important;
+  }
+
+  #pledgeSuccessModal h3 {
+    font-size: 1.25rem !important;
+  }
+
+  #pledgeSuccessModal p {
+    font-size: 0.85rem !important;
+    margin-bottom: 18px !important;
+  }
+
+  /* Form responsive spacing */
+  .form-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .form-group {
+    margin-bottom: 12px !important;
   }
 }
 
@@ -1408,4 +1669,159 @@ select.form-control {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   display: inline-block;
+}
+
+/* Progress Bar styling for cards & details */
+.donation-progress-container {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.donation-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.donation-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.donation-progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: var(--radius-pill);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Premium Styling for Create Request & Sign In CTA Buttons */
+#donPageCreateBtn,
+#donPageSignInBtn {
+  background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 12px 32px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+#donPageCreateBtn:hover,
+#donPageSignInBtn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+  background: linear-gradient(135deg, var(--primary-dark) 0%, #4338ca 100%);
+}
+
+#donPageCreateBtn:active,
+#donPageSignInBtn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Premium Drag & Drop File Upload Container */
+.file-upload-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.file-upload-wrapper input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.file-upload-box {
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+}
+
+.file-upload-wrapper:hover .file-upload-box {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.upload-icon {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+  transition: transform 0.2s ease;
+}
+
+.file-upload-wrapper:hover .upload-icon {
+  transform: translateY(-2px);
+}
+
+.upload-text {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.upload-link {
+  color: var(--primary);
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.upload-info {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+@keyframes pulseSuccess {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.success-checkmark-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #ecfdf5;
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  margin: 0 auto 20px auto;
+  animation: pulseSuccess 2s infinite;
+  font-weight: bold;
 }
