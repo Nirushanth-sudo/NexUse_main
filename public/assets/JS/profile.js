@@ -123,6 +123,37 @@ const MOCK_USERS_DB = {
             { reviewer: "John Doe", rating: 5, date: "2026-05-12", text: "Borrowed the lawn mower. Cleaned it, returned it, Saman was incredibly friendly. Great sharing advocate!" },
             { reviewer: "Nished Ruveesha", rating: 4, date: "2026-02-15", text: "Helped deliver study desks. Handover was smooth, though directions to center were slightly confusing." }
         ]
+    },
+    "104": {
+        id: 104,
+        username: "haripras",
+        name: "Harindu Prasad",
+        email: "harindu.p@example.com",
+        role: "Community Member",
+        rating: 4.75,
+        reviewsCount: 9,
+        verified: true,
+        phone: "0770004445",
+        location: "Gampaha",
+        address: "88 Temple Road, Gampaha",
+        joinedDate: "April 2025",
+        stats: {
+            donations: 9,
+            pledges: 6,
+            listings: 5,
+            disputes: 0
+        },
+        listings: [
+            { id: 401, type: "rent", title: "Sewing Machine", category: "Tools", price: 5.00, emoji: "🧵", condition: "Good", location: "Colombo" },
+            { id: 402, type: "buy", title: "Fiction Novels Pack", category: "Books", price: 10.00, emoji: "📖", condition: "Like New", location: "Colombo" }
+        ],
+        donations: [
+            { id: 2, category: "Books", title: "Textbooks for Grade 10", item_type: "BOOKS", description: "Need mathematics and science textbooks for 15 students preparing for exams.", location: "Colombo", proof_file: null }
+        ],
+        reviews: [
+            { reviewer: "Nished Ruveesha", rating: 5, date: "2026-06-01", text: "Donated grade 10 textbooks to Amara. Communication was fast and polite. Absolute pleasure!" },
+            { reviewer: "John Doe", rating: 4.5, date: "2026-03-24", text: "Rented the sewing machine. Had a tiny issue with tension but Amara immediately helped me resolve it." }
+        ]
     }
 };
 

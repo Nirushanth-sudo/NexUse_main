@@ -39,6 +39,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     }
+
+    // Close modals when clicking on the backdrop
+    document.querySelectorAll('dialog.modal').forEach(dialog => {
+        dialog.addEventListener('click', (e) => {
+            if (e.target === dialog) {
+                dialog.close();
+            }
+        });
+    });
 });
 
 function initDonations() {
