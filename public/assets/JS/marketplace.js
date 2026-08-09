@@ -11,9 +11,9 @@ const MOCK_MARKETPLACE_LISTINGS = [
         location: "Colombo",
         description: "Great camera for beginners. Barely used.",
         image: "cam.png",
-        owner_id: 101,
-        owner_name: "John Doe",
-        owner_rating: 4.8,
+        owner_id: 104,
+        owner_name: "Harindu Prasad",
+        owner_rating: 4.75,
         in_wishlist: false,
         in_cart: false
     },
@@ -28,7 +28,7 @@ const MOCK_MARKETPLACE_LISTINGS = [
         description: "Powerful pressure washer. Available for daily rent.",
         image: "washgun.png",
         owner_id: 102,
-        owner_name: "Jane Smith",
+        owner_name: "Amara Perera",
         owner_rating: 4.5,
         in_wishlist: false,
         in_cart: false
@@ -44,7 +44,7 @@ const MOCK_MARKETPLACE_LISTINGS = [
         description: "15-inch MacBook Pro, 16GB RAM, 512GB SSD.",
         image: "AppleMac.jpg",
         owner_id: 103,
-        owner_name: "Mike Johnson",
+        owner_name: "Saman Kumara",
         owner_rating: 4.9,
         in_wishlist: false,
         in_cart: false
