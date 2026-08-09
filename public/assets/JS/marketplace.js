@@ -73,6 +73,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     }
+
+    // Close modals when clicking on the backdrop
+    document.querySelectorAll('dialog.modal').forEach(dialog => {
+        dialog.addEventListener('click', (e) => {
+            if (e.target === dialog) {
+                dialog.close();
+            }
+        });
+    });
 });
 
 function initMarketplace() {
@@ -117,7 +126,7 @@ function getFilters() {
     const type = document.querySelector('input[name="mktType"]:checked')?.value || '';
     const condition = document.querySelector('input[name="mktCond"]:checked')?.value || '';
     const location = document.getElementById('mktFilterLocation')?.value || '';
-    
+
     const checkedCats = [...document.querySelectorAll('#mktFilterCategory input:checked')].map(i => i.value);
     const category = checkedCats.join(',');
 
@@ -163,11 +172,11 @@ function renderMarketplace(initLocations = false) {
         const badgeClass = l.type === 'buy' ? 'badge-sell' : l.type === 'rent' ? 'badge-rent' : 'badge-donate';
         const badgeText = l.type === 'buy' ? 'SELL' : l.type === 'rent' ? 'RENT' : 'DONATE';
         const priceHtml = l.type === 'buy' ? `<div class="product-card-price">$${l.price.toFixed(2)}</div>` :
-                          l.type === 'rent' ? `<div class="product-card-price">$${l.price.toFixed(2)}/day</div>` :
-                          `<div class="product-card-price free">FREE</div>`;
-        
+            l.type === 'rent' ? `<div class="product-card-price">$${l.price.toFixed(2)}/day</div>` :
+                `<div class="product-card-price free">FREE</div>`;
+
         return `
-            <div class="product-card">
+            <div class="product-card" onclick="openProductDetail(${l.id})" style="cursor: pointer;">
                 <div class="product-card-image">
                     ${l.image || l.imageUrl ? `<img src="${l.imageUrl ? l.imageUrl : `assets/images/${l.image}`}" alt="${escapeHTML(l.title)}" style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:0;">` : `<span class="emoji-icon">${escapeHTML(l.emoji || '📦')}</span>`}
                     <span class="product-card-badge badge ${badgeClass}" style="z-index:1;">${badgeText}</span>
@@ -180,7 +189,17 @@ function renderMarketplace(initLocations = false) {
                     ${priceHtml}
                     <div class="product-card-location">📍 ${escapeHTML(l.location)}</div>
                     <div class="product-card-footer">
-                        <button class="btn-view-details" onclick="openProductDetail(${l.id})">View Details</button>
+                        <a href="profile.html?id=${l.owner_id}" class="owner-info-link" title="Click to view trust profile" onclick="event.stopPropagation()">
+                            <div class="owner-info-avatar">${escapeHTML((l.owner_name || 'U').charAt(0))}</div>
+                            <div class="owner-info">
+                                <span class="owner-name">${escapeHTML(l.owner_name)}</span>
+                                <span class="owner-rating">⭐ ${l.owner_rating ? l.owner_rating.toFixed(2) : '0.00'} <span class="rating-label">Rating</span></span>
+                            </div>
+                        </a>
+                        <div class="product-card-actions" onclick="event.stopPropagation()">
+                            <button class="btn btn-outline btn-sm" onclick="openProductDetail(${l.id})">View Details</button>
+                            ${l.type === 'buy' ? `<button class="btn btn-primary btn-sm" onclick="addToCart(${l.id})">Add to Cart</button>` : ''}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -196,7 +215,7 @@ function populateLocations(listings) {
     const locations = [...new Set(listings.map(l => l.location).filter(Boolean))];
     const current = locSel.value;
 
-    locSel.innerHTML = `<option value="">All Locations</option>` + 
+    locSel.innerHTML = `<option value="">All Locations</option>` +
         locations.map(loc => `<option value="${escapeHTML(loc)}" ${loc === current ? 'selected' : ''}>${escapeHTML(loc)}</option>`).join('');
 }
 
@@ -217,19 +236,19 @@ function toggleWishlist(id, event) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ listing_id: id, action: isAdding ? 'add' : 'remove' })
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast(isAdding ? "Added to Wishlist ❤️" : "Removed from Wishlist", "", isAdding ? "success" : "warning");
-            if (cardWishBtn) {
-                cardWishBtn.classList.toggle('active');
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast(isAdding ? "Added to Wishlist ❤️" : "Removed from Wishlist", "", isAdding ? "success" : "warning");
+                if (cardWishBtn) {
+                    cardWishBtn.classList.toggle('active');
+                } else {
+                    renderMarketplace();
+                }
             } else {
-                renderMarketplace();
+                showToast("Error", data.message, "error");
             }
-        } else {
-            showToast("Error", data.message, "error");
-        }
-    });
+        });
 }
 
 function openProductDetail(id) {
@@ -237,7 +256,7 @@ function openProductDetail(id) {
     if (!l) return;
 
     document.getElementById('pdTitle').textContent = l.title;
-    
+
     const imageArea = document.getElementById('pdImageArea');
     if (l.image || l.imageUrl) {
         imageArea.innerHTML = `<img src="${l.imageUrl ? l.imageUrl : `assets/images/${l.image}`}" alt="${escapeHTML(l.title)}" style="width:100%; height:100%; object-fit:cover;">
@@ -246,7 +265,7 @@ function openProductDetail(id) {
         imageArea.innerHTML = `<span id="pdEmoji" style="font-size:4rem;">${escapeHTML(l.emoji || '📦')}</span>
         <span style="position:absolute;top:12px;left:12px;" id="pdBadge"></span>`;
     }
-    
+
     document.getElementById('pdCategory').textContent = l.category;
     document.getElementById('pdCondition').textContent = l.condition;
     document.getElementById('pdLocation').textContent = l.location;
@@ -259,7 +278,7 @@ function openProductDetail(id) {
 
     const priceEl = document.getElementById('pdPrice');
     priceEl.textContent = l.type === 'buy' ? `$${l.price.toFixed(2)}` :
-                          l.type === 'rent' ? `$${l.price.toFixed(2)} / day` : "FREE";
+        l.type === 'rent' ? `$${l.price.toFixed(2)} / day` : "FREE";
     priceEl.style.color = l.type === 'donate' || l.type === 'share' ? "var(--green)" : "var(--text)";
 
     // Hide show dates/notes
@@ -334,16 +353,16 @@ function addToCart(listingId) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ listing_id: listingId, action: 'add' })
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast("Added to Cart 🛒", "", "success");
-            document.getElementById('productDetailModal').close();
-            renderMarketplace();
-        } else {
-            showToast("Error", data.message, "error");
-        }
-    });
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast("Added to Cart 🛒", "", "success");
+                document.getElementById('productDetailModal').close();
+                renderMarketplace();
+            } else {
+                showToast("Error", data.message, "error");
+            }
+        });
 }
 
 function sendRentalRequest(listingId) {
@@ -361,16 +380,16 @@ function sendRentalRequest(listingId) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ listing_id: listingId, start_date: startDate, return_date: returnDate })
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast("Success", data.message, "success");
-            document.getElementById('productDetailModal').close();
-            renderMarketplace();
-        } else {
-            showToast("Error", data.message, "error");
-        }
-    });
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast("Success", data.message, "success");
+                document.getElementById('productDetailModal').close();
+                renderMarketplace();
+            } else {
+                showToast("Error", data.message, "error");
+            }
+        });
 }
 
 function pledgeDonation(listingId) {
@@ -387,16 +406,16 @@ function pledgeDonation(listingId) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ listing_id: listingId, start_date: null, return_date: null })
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast("Success", data.message, "success");
-            document.getElementById('productDetailModal').close();
-            renderMarketplace();
-        } else {
-            showToast("Error", data.message, "error");
-        }
-    });
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast("Success", data.message, "success");
+                document.getElementById('productDetailModal').close();
+                renderMarketplace();
+            } else {
+                showToast("Error", data.message, "error");
+            }
+        });
 }
 
 function openListingModal(listingId = null) {
@@ -456,7 +475,7 @@ function submitListing() {
     const price = parseFloat(document.getElementById('lPrice').value || 0);
     const location = document.getElementById('lLocation').value;
     const description = document.getElementById('lDescription').value;
-    
+
     const imageInput = document.getElementById('lImage');
     let imageObj = null;
     if (imageInput && imageInput.files[0]) {
@@ -474,7 +493,7 @@ function submitListing() {
             l.location = location;
             l.description = description;
             if (imageObj) {
-                l.image = null; 
+                l.image = null;
                 l.imageUrl = imageObj;
             }
         }
