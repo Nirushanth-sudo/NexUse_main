@@ -1,5 +1,56 @@
 // public/js/marketplace.js
 
+const MOCK_MARKETPLACE_LISTINGS = [
+    {
+        id: 1,
+        title: "Canon EOS Rebel T7 DSLR",
+        category: "Electronics",
+        condition: "Like New",
+        type: "buy",
+        price: 300,
+        location: "Colombo",
+        description: "Great camera for beginners. Barely used.",
+        image: "cam.png",
+        owner_id: 101,
+        owner_name: "John Doe",
+        owner_rating: 4.8,
+        in_wishlist: false,
+        in_cart: false
+    },
+    {
+        id: 2,
+        title: "Pressure Washer 2000 PSI",
+        category: "Tools",
+        condition: "Good",
+        type: "rent",
+        price: 25,
+        location: "Gampaha",
+        description: "Powerful pressure washer. Available for daily rent.",
+        image: "washgun.png",
+        owner_id: 102,
+        owner_name: "Jane Smith",
+        owner_rating: 4.5,
+        in_wishlist: false,
+        in_cart: false
+    },
+    {
+        id: 3,
+        title: "MacBook Pro 15-inch (2018)",
+        category: "Electronics",
+        condition: "Good",
+        type: "buy",
+        price: 750,
+        location: "Colombo",
+        description: "15-inch MacBook Pro, 16GB RAM, 512GB SSD.",
+        image: "AppleMac.jpg",
+        owner_id: 103,
+        owner_name: "Mike Johnson",
+        owner_rating: 4.9,
+        in_wishlist: false,
+        in_cart: false
+    }
+];
+
 document.addEventListener('DOMContentLoaded', () => {
     // Check session first
     window.sessionPromise.then(user => {
@@ -64,61 +115,61 @@ function renderMarketplace(initLocations = false) {
 
     if (!grid) return;
 
-    fetch(`api/listings/index.php?${query}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.success && data.listings) {
-                const listings = data.listings;
+    // Filter local mock data
+    const searchLower = filters.search.toLowerCase();
+    const selectedCategories = filters.category ? filters.category.split(',').filter(Boolean) : [];
 
-                if (initLocations) {
-                    populateLocations(listings);
-                }
+    let listings = MOCK_MARKETPLACE_LISTINGS.filter(l => {
+        const matchSearch = !searchLower || l.title.toLowerCase().includes(searchLower) || l.description.toLowerCase().includes(searchLower);
+        const matchType = !filters.type || l.type === filters.type;
+        const matchCond = !filters.condition || l.condition === filters.condition;
+        const matchLoc = !filters.location || l.location === filters.location;
+        const matchCat = selectedCategories.length === 0 || selectedCategories.includes(l.category);
 
-                if (listings.length === 0) {
-                    grid.innerHTML = `
-                        <div class="empty-state" style="grid-column:1/-1;">
-                            <div class="empty-state-icon">🔍</div>
-                            <div class="empty-state-text">No items match your search.</div>
-                        </div>
-                    `;
-                    return;
-                }
+        return matchSearch && matchType && matchCond && matchLoc && matchCat;
+    });
 
-                grid.innerHTML = listings.map(l => {
-                    const badgeClass = l.type === 'buy' ? 'badge-sell' : l.type === 'rent' ? 'badge-rent' : 'badge-donate';
-                    const badgeText = l.type === 'buy' ? 'SELL' : l.type === 'rent' ? 'RENT' : 'DONATE';
-                    const priceHtml = l.type === 'buy' ? `<div class="product-card-price">$${l.price.toFixed(2)}</div>` :
-                                      l.type === 'rent' ? `<div class="product-card-price">$${l.price.toFixed(2)}/day</div>` :
-                                      `<div class="product-card-price free">FREE</div>`;
-                    
-                    return `
-                        <div class="product-card">
-                            <div class="product-card-image">
-                                <span class="emoji-icon">${escapeHTML(l.emoji || '📦')}</span>
-                                <span class="product-card-badge badge ${badgeClass}">${badgeText}</span>
-                                <button class="product-card-wish ${l.in_wishlist ? 'active' : ''}" onclick="toggleWishlist(${l.id}, event)" title="Wishlist">❤️</button>
-                            </div>
-                            <div class="product-card-body">
-                                <div class="product-card-category">${escapeHTML(l.category)}</div>
-                                <div class="product-card-title">${escapeHTML(l.title)}</div>
-                                <div class="product-card-desc">${escapeHTML(l.description)}</div>
-                                ${priceHtml}
-                                <div class="product-card-location">📍 ${escapeHTML(l.location)}</div>
-                                <div class="product-card-footer">
-                                    <button class="btn-view-details" onclick="openProductDetail(${l.id})">View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            } else {
-                showToast("Error", data.message || "Failed to fetch listings", "error");
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-text" style="color:var(--red);">Failed to connect to backend service.</div></div>`;
-        });
+    if (initLocations) {
+        populateLocations(MOCK_MARKETPLACE_LISTINGS);
+    }
+
+    if (listings.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+                <div class="empty-state-icon">🔍</div>
+                <div class="empty-state-text">No items match your search.</div>
+            </div>
+        `;
+        return;
+    }
+
+    grid.innerHTML = listings.map(l => {
+        const badgeClass = l.type === 'buy' ? 'badge-sell' : l.type === 'rent' ? 'badge-rent' : 'badge-donate';
+        const badgeText = l.type === 'buy' ? 'SELL' : l.type === 'rent' ? 'RENT' : 'DONATE';
+        const priceHtml = l.type === 'buy' ? `<div class="product-card-price">$${l.price.toFixed(2)}</div>` :
+                          l.type === 'rent' ? `<div class="product-card-price">$${l.price.toFixed(2)}/day</div>` :
+                          `<div class="product-card-price free">FREE</div>`;
+        
+        return `
+            <div class="product-card">
+                <div class="product-card-image">
+                    ${l.image ? `<img src="assets/images/${l.image}" alt="${escapeHTML(l.title)}" style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:0;">` : `<span class="emoji-icon">${escapeHTML(l.emoji || '📦')}</span>`}
+                    <span class="product-card-badge badge ${badgeClass}" style="z-index:1;">${badgeText}</span>
+                    <button class="product-card-wish ${l.in_wishlist ? 'active' : ''}" onclick="toggleWishlist(${l.id}, event)" title="Wishlist" style="z-index:1;">❤️</button>
+                </div>
+                <div class="product-card-body">
+                    <div class="product-card-category">${escapeHTML(l.category)}</div>
+                    <div class="product-card-title">${escapeHTML(l.title)}</div>
+                    <div class="product-card-desc">${escapeHTML(l.description)}</div>
+                    ${priceHtml}
+                    <div class="product-card-location">📍 ${escapeHTML(l.location)}</div>
+                    <div class="product-card-footer">
+                        <button class="btn-view-details" onclick="openProductDetail(${l.id})">View Details</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 function populateLocations(listings) {
@@ -166,90 +217,93 @@ function toggleWishlist(id, event) {
 }
 
 function openProductDetail(id) {
-    fetch(`api/listings/index.php?search=&type=&condition=&location=&category=`) // fetch all to find details
-        .then(res => res.json())
-        .then(data => {
-            if (data.success && data.listings) {
-                const l = data.listings.find(x => x.id === id);
-                if (!l) return;
+    const l = MOCK_MARKETPLACE_LISTINGS.find(x => x.id === id);
+    if (!l) return;
 
-                document.getElementById('pdTitle').textContent = l.title;
-                document.getElementById('pdEmoji').textContent = l.emoji || '📦';
-                document.getElementById('pdCategory').textContent = l.category;
-                document.getElementById('pdCondition').textContent = l.condition;
-                document.getElementById('pdLocation').textContent = l.location;
-                document.getElementById('pdOwner').innerHTML = `<a href="profile.html?id=${l.owner_id}" style="color:var(--primary); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="View trust profile">👤 ${escapeHTML(l.owner_name)} <span style="color:var(--text-secondary); font-weight:500; font-size:0.8rem;">(★ ${l.owner_rating.toFixed(1)})</span></a>`;
-                document.getElementById('pdDescription').textContent = l.description;
+    document.getElementById('pdTitle').textContent = l.title;
+    
+    const imageArea = document.getElementById('pdImageArea');
+    if (l.image) {
+        imageArea.innerHTML = `<img src="assets/images/${l.image}" alt="${escapeHTML(l.title)}" style="width:100%; height:100%; object-fit:cover;">
+        <span style="position:absolute;top:12px;left:12px;" id="pdBadge"></span>`;
+    } else {
+        imageArea.innerHTML = `<span id="pdEmoji" style="font-size:4rem;">${escapeHTML(l.emoji || '📦')}</span>
+        <span style="position:absolute;top:12px;left:12px;" id="pdBadge"></span>`;
+    }
+    
+    document.getElementById('pdCategory').textContent = l.category;
+    document.getElementById('pdCondition').textContent = l.condition;
+    document.getElementById('pdLocation').textContent = l.location;
+    document.getElementById('pdOwner').innerHTML = `<a href="profile.html?id=${l.owner_id}" style="color:var(--primary); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="View trust profile">👤 ${escapeHTML(l.owner_name)} <span style="color:var(--text-secondary); font-weight:500; font-size:0.8rem;">(★ ${l.owner_rating.toFixed(1)})</span></a>`;
+    document.getElementById('pdDescription').textContent = l.description;
 
-                const badgeMap = { buy: "badge-sell SELL", rent: "badge-rent RENT", donate: "badge-donate DONATE", share: "badge-donate FREE SHARE", disposal: "badge-disposal DISPOSAL" };
-                const [cls, txt] = (badgeMap[l.type] || "badge-disposal ITEM").split(" ");
-                document.getElementById('pdBadge').innerHTML = `<span class="badge ${cls}">${txt}</span>`;
+    const badgeMap = { buy: "badge-sell SELL", rent: "badge-rent RENT", donate: "badge-donate DONATE", share: "badge-donate FREE SHARE", disposal: "badge-disposal DISPOSAL" };
+    const [cls, txt] = (badgeMap[l.type] || "badge-disposal ITEM").split(" ");
+    document.getElementById('pdBadge').innerHTML = `<span class="badge ${cls}">${txt}</span>`;
 
-                const priceEl = document.getElementById('pdPrice');
-                priceEl.textContent = l.type === 'buy' ? `$${l.price.toFixed(2)}` :
-                                      l.type === 'rent' ? `$${l.price.toFixed(2)} / day` : "FREE";
-                priceEl.style.color = l.type === 'donate' || l.type === 'share' ? "var(--green)" : "var(--text)";
+    const priceEl = document.getElementById('pdPrice');
+    priceEl.textContent = l.type === 'buy' ? `$${l.price.toFixed(2)}` :
+                          l.type === 'rent' ? `$${l.price.toFixed(2)} / day` : "FREE";
+    priceEl.style.color = l.type === 'donate' || l.type === 'share' ? "var(--green)" : "var(--text)";
 
-                // Hide show dates/notes
-                const rdates = document.getElementById('pdRentalDates');
-                const pledgeNote = document.getElementById('pdPledgeNote');
-                rdates.classList.toggle('hidden', l.type !== 'rent' && l.type !== 'share');
-                pledgeNote.classList.toggle('hidden', l.type !== 'donate');
+    // Hide show dates/notes
+    const rdates = document.getElementById('pdRentalDates');
+    const pledgeNote = document.getElementById('pdPledgeNote');
+    rdates.classList.toggle('hidden', l.type !== 'rent' && l.type !== 'share');
+    pledgeNote.classList.toggle('hidden', l.type !== 'donate');
 
-                if (l.type === 'rent' || l.type === 'share') {
-                    const today = new Date();
-                    const returnDate = new Date();
-                    returnDate.setDate(today.getDate() + 5);
-                    document.getElementById('pdStartDate').value = today.toISOString().split('T')[0];
-                    document.getElementById('pdReturnDate').value = returnDate.toISOString().split('T')[0];
-                }
+    if (l.type === 'rent' || l.type === 'share') {
+        const today = new Date();
+        const returnDate = new Date();
+        returnDate.setDate(today.getDate() + 5);
+        document.getElementById('pdStartDate').value = today.toISOString().split('T')[0];
+        document.getElementById('pdReturnDate').value = returnDate.toISOString().split('T')[0];
+    }
 
-                // Setup action button
-                const actionBtn = document.getElementById('pdActionBtn');
-                const wishlistBtn = document.getElementById('pdWishBtn');
+    // Setup action button
+    const actionBtn = document.getElementById('pdActionBtn');
+    const wishlistBtn = document.getElementById('pdWishBtn');
 
-                if (window.userSession && l.owner_id === window.userSession.id) {
-                    actionBtn.textContent = "Your Listing (Edit)";
-                    actionBtn.onclick = () => {
-                        document.getElementById('productDetailModal').close();
-                        openListingModal(l.id);
-                    };
+    if (window.userSession && l.owner_id === window.userSession.id) {
+        actionBtn.textContent = "Your Listing (Edit)";
+        actionBtn.onclick = () => {
+            document.getElementById('productDetailModal').close();
+            openListingModal(l.id);
+        };
+    } else {
+        if (l.type === 'buy') {
+            actionBtn.textContent = l.in_cart ? "In Cart 🛒" : "Add to Cart";
+            actionBtn.onclick = () => {
+                if (l.in_cart) {
+                    window.location.href = 'dashboard.html';
                 } else {
-                    if (l.type === 'buy') {
-                        actionBtn.textContent = l.in_cart ? "In Cart 🛒" : "Add to Cart";
-                        actionBtn.onclick = () => {
-                            if (l.in_cart) {
-                                window.location.href = 'dashboard.html';
-                            } else {
-                                addToCart(l.id);
-                            }
-                        };
-                    } else if (l.type === 'rent' || l.type === 'share') {
-                        actionBtn.textContent = "Send Rental Request";
-                        actionBtn.onclick = () => sendRentalRequest(l.id);
-                    } else if (l.type === 'donate') {
-                        actionBtn.textContent = "💝 Pledge Item";
-                        actionBtn.onclick = () => pledgeDonation(l.id);
-                    }
+                    addToCart(l.id);
                 }
+            };
+        } else if (l.type === 'rent' || l.type === 'share') {
+            actionBtn.textContent = "Send Rental Request";
+            actionBtn.onclick = () => sendRentalRequest(l.id);
+        } else if (l.type === 'donate') {
+            actionBtn.textContent = "💝 Pledge Item";
+            actionBtn.onclick = () => pledgeDonation(l.id);
+        }
+    }
 
-                wishlistBtn.onclick = () => {
-                    toggleWishlist(l.id, null);
-                    document.getElementById('productDetailModal').close();
-                };
+    wishlistBtn.onclick = () => {
+        toggleWishlist(l.id, null);
+        document.getElementById('productDetailModal').close();
+    };
 
-                document.getElementById('pdChatBtn').onclick = () => {
-                    document.getElementById('productDetailModal').close();
-                    window.location.href = 'dashboard.html?tab=chat&listing=' + l.id;
-                };
+    document.getElementById('pdChatBtn').onclick = () => {
+        document.getElementById('productDetailModal').close();
+        window.location.href = 'dashboard.html?tab=chat&listing=' + l.id;
+    };
 
-                document.getElementById('pdClose').onclick = () => {
-                    document.getElementById('productDetailModal').close();
-                };
+    document.getElementById('pdClose').onclick = () => {
+        document.getElementById('productDetailModal').close();
+    };
 
-                document.getElementById('productDetailModal').showModal();
-            }
-        });
+    document.getElementById('productDetailModal').showModal();
 }
 
 function addToCart(listingId) {
@@ -342,23 +396,17 @@ function openListingModal(listingId = null) {
     document.getElementById('listingModalTitle').textContent = listingId ? "Edit Listing" : "List an Item";
 
     if (listingId) {
-        fetch(`api/listings/index.php?search=&type=&condition=&location=&category=`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && data.listings) {
-                    const l = data.listings.find(x => x.id === listingId);
-                    if (l) {
-                        document.getElementById('lTitle').value = l.title;
-                        document.getElementById('lCategory').value = l.category;
-                        document.getElementById('lCondition').value = l.condition;
-                        document.getElementById('lType').value = l.type;
-                        document.getElementById('lPrice').value = l.price;
-                        document.getElementById('lLocation').value = l.location;
-                        document.getElementById('lDescription').value = l.description;
-                        syncListingPriceField();
-                    }
-                }
-            });
+        const l = MOCK_MARKETPLACE_LISTINGS.find(x => x.id === listingId);
+        if (l) {
+            document.getElementById('lTitle').value = l.title;
+            document.getElementById('lCategory').value = l.category;
+            document.getElementById('lCondition').value = l.condition;
+            document.getElementById('lType').value = l.type;
+            document.getElementById('lPrice').value = l.price;
+            document.getElementById('lLocation').value = l.location;
+            document.getElementById('lDescription').value = l.description;
+            syncListingPriceField();
+        }
     } else {
         document.getElementById('lLocation').value = window.userSession.location;
         syncListingPriceField();
