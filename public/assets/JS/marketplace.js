@@ -57,6 +57,22 @@ document.addEventListener('DOMContentLoaded', () => {
         // Init UI listeners
         initMarketplace();
     });
+
+    const lImageInput = document.getElementById('lImage');
+    if (lImageInput) {
+        lImageInput.onchange = (e) => {
+            const file = e.target.files[0];
+            const textEl = e.target.parentElement.querySelector('.upload-text');
+            const iconEl = e.target.parentElement.querySelector('.upload-icon');
+            if (file) {
+                textEl.innerHTML = `Selected: <strong style="color:var(--green); font-size:0.8rem;">${escapeHTML(file.name)}</strong>`;
+                iconEl.textContent = '🖼️';
+            } else {
+                textEl.innerHTML = `Drag & drop image or <span class="upload-link" style="color: var(--primary); font-weight: 600;">browse</span>`;
+                iconEl.textContent = '📤';
+            }
+        };
+    }
 });
 
 function initMarketplace() {
@@ -153,7 +169,7 @@ function renderMarketplace(initLocations = false) {
         return `
             <div class="product-card">
                 <div class="product-card-image">
-                    ${l.image ? `<img src="assets/images/${l.image}" alt="${escapeHTML(l.title)}" style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:0;">` : `<span class="emoji-icon">${escapeHTML(l.emoji || '📦')}</span>`}
+                    ${l.image || l.imageUrl ? `<img src="${l.imageUrl ? l.imageUrl : `assets/images/${l.image}`}" alt="${escapeHTML(l.title)}" style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:0;">` : `<span class="emoji-icon">${escapeHTML(l.emoji || '📦')}</span>`}
                     <span class="product-card-badge badge ${badgeClass}" style="z-index:1;">${badgeText}</span>
                     <button class="product-card-wish ${l.in_wishlist ? 'active' : ''}" onclick="toggleWishlist(${l.id}, event)" title="Wishlist" style="z-index:1;">❤️</button>
                 </div>
@@ -223,8 +239,8 @@ function openProductDetail(id) {
     document.getElementById('pdTitle').textContent = l.title;
     
     const imageArea = document.getElementById('pdImageArea');
-    if (l.image) {
-        imageArea.innerHTML = `<img src="assets/images/${l.image}" alt="${escapeHTML(l.title)}" style="width:100%; height:100%; object-fit:cover;">
+    if (l.image || l.imageUrl) {
+        imageArea.innerHTML = `<img src="${l.imageUrl ? l.imageUrl : `assets/images/${l.image}`}" alt="${escapeHTML(l.title)}" style="width:100%; height:100%; object-fit:cover;">
         <span style="position:absolute;top:12px;left:12px;" id="pdBadge"></span>`;
     } else {
         imageArea.innerHTML = `<span id="pdEmoji" style="font-size:4rem;">${escapeHTML(l.emoji || '📦')}</span>
@@ -395,6 +411,14 @@ function openListingModal(listingId = null) {
     document.getElementById('listingEditId').value = listingId || '';
     document.getElementById('listingModalTitle').textContent = listingId ? "Edit Listing" : "List an Item";
 
+    const lImageInput = document.getElementById('lImage');
+    if (lImageInput) {
+        const textEl = lImageInput.parentElement.querySelector('.upload-text');
+        const iconEl = lImageInput.parentElement.querySelector('.upload-icon');
+        textEl.innerHTML = `Drag & drop image or <span class="upload-link" style="color: var(--primary); font-weight: 600;">browse</span>`;
+        iconEl.textContent = '📤';
+    }
+
     if (listingId) {
         const l = MOCK_MARKETPLACE_LISTINGS.find(x => x.id === listingId);
         if (l) {
@@ -425,35 +449,59 @@ function submitListing() {
     const editId = document.getElementById('listingEditId').value;
     const isEdit = !!editId;
 
-    const payload = {
-        title: document.getElementById('lTitle').value,
-        category: document.getElementById('lCategory').value,
-        condition: document.getElementById('lCondition').value,
-        type: document.getElementById('lType').value,
-        price: parseFloat(document.getElementById('lPrice').value || 0),
-        location: document.getElementById('lLocation').value,
-        description: document.getElementById('lDescription').value
-    };
-
-    if (isEdit) {
-        payload.id = parseInt(editId);
+    const title = document.getElementById('lTitle').value;
+    const category = document.getElementById('lCategory').value;
+    const condition = document.getElementById('lCondition').value;
+    const type = document.getElementById('lType').value;
+    const price = parseFloat(document.getElementById('lPrice').value || 0);
+    const location = document.getElementById('lLocation').value;
+    const description = document.getElementById('lDescription').value;
+    
+    const imageInput = document.getElementById('lImage');
+    let imageObj = null;
+    if (imageInput && imageInput.files[0]) {
+        imageObj = URL.createObjectURL(imageInput.files[0]);
     }
 
-    const endpoint = isEdit ? 'api/listings/update.php' : 'api/listings/create.php';
-
-    fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            showToast("Success", data.message, "success");
-            document.getElementById('listingModal').close();
-            renderMarketplace(true);
-        } else {
-            showToast("Error", data.message, "error");
+    if (isEdit) {
+        const l = MOCK_MARKETPLACE_LISTINGS.find(x => x.id === parseInt(editId));
+        if (l) {
+            l.title = title;
+            l.category = category;
+            l.condition = condition;
+            l.type = type;
+            l.price = price;
+            l.location = location;
+            l.description = description;
+            if (imageObj) {
+                l.image = null; 
+                l.imageUrl = imageObj;
+            }
         }
-    });
+        showToast("Success", "Listing updated successfully.", "success");
+    } else {
+        const newListing = {
+            id: Date.now(),
+            title: title,
+            category: category,
+            condition: condition,
+            type: type,
+            price: price,
+            location: location,
+            description: description,
+            image: null,
+            imageUrl: imageObj,
+            owner_id: window.userSession ? window.userSession.id : 999,
+            owner_name: window.userSession ? window.userSession.name : 'Guest User',
+            owner_rating: window.userSession ? window.userSession.rating : 5.0,
+            in_wishlist: false,
+            in_cart: false
+        };
+        MOCK_MARKETPLACE_LISTINGS.unshift(newListing);
+        showToast("Success", "Listing created successfully.", "success");
+    }
+
+    document.getElementById('listingModal').close();
+    document.getElementById('listingForm').reset();
+    renderMarketplace(true);
 }
