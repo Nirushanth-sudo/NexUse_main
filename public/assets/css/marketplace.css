@@ -752,12 +752,13 @@ input[type="checkbox"] {
 
 .product-card-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   width: 100%;
 }
 
 .product-card-actions .btn {
-  flex: 1;
+  flex: 1 1 110px;
   justify-content: center;
 }
 
