@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +8,13 @@
   <link rel="stylesheet" href="assets/css/login.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
+
 <body>
 
   <!-- GLOBAL NAVBAR -->
   <nav class="navbar" id="mainNavbar">
     <a href="index.html" class="navbar-brand" id="navBrand">
-      <svg class="navbar-brand-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 22h8l10 26h28l8-18H30" stroke="#1a5cff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="36" cy="60" r="6" fill="#1a5cff"/>
-        <circle cx="60" cy="60" r="6" fill="#1a5cff"/>
-        <path d="M48 38c-3-5-10-5-13 0-2.5 4 0 10 6 14l7 5 7-5c6-4 8.5-10 6-14-3-5-10-5-13 0z" fill="#12b76a"/>
-      </svg>
+      <img class="navbar-brand-logo" src="images/NexUse.svg" alt="NexUse Logo">
       <span><span class="nex">Nex</span><span class="use">Use</span></span>
     </a>
 
@@ -59,7 +56,7 @@
     <div class="auth-card">
       <h2>Welcome Back</h2>
       <p class="auth-sub">Sign in to access your NexUse portal</p>
-      
+
       <form id="loginForm" style="margin-bottom: 20px;">
         <div class="form-group">
           <label class="form-label">Username/Email Address</label>
@@ -75,7 +72,8 @@
       <!-- Google Sign In Container -->
       <div style="margin: 20px 0; display: flex; align-items: center; justify-content: center; gap: 10px;">
         <div style="flex:1; border-bottom: 1.5px solid var(--border-light);"></div>
-        <span style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; font-weight:600;">or</span>
+        <span
+          style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; font-weight:600;">or</span>
         <div style="flex:1; border-bottom: 1.5px solid var(--border-light);"></div>
       </div>
       <div id="googleBtnContainer" style="width: 100%;"></div>
@@ -99,25 +97,25 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          showToast("Success", "Logged in successfully.", "success");
-          setTimeout(() => {
-            window.location.href = data.user.role === 'admin' ? 'admin.html' : 'dashboard.html';
-          }, 800);
-        } else {
-          showToast("Error", data.message || "Invalid credentials", "error");
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        showToast("Error", "Server connection failed.", "error");
-      });
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            showToast("Success", "Logged in successfully.", "success");
+            setTimeout(() => {
+              window.location.href = data.user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+            }, 800);
+          } else {
+            showToast("Error", data.message || "Invalid credentials", "error");
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          showToast("Error", "Server connection failed.", "error");
+        });
     };
 
     // Initialize Google OAuth Sign In
-    window.onload = function() {
+    window.onload = function () {
       fetch('api/auth/google_client_id.php')
         .then(res => res.json())
         .then(data => {
@@ -140,22 +138,23 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential: response.credential })
       })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          showToast("Success", "Logged in with Google!", "success");
-          setTimeout(() => {
-            window.location.href = 'dashboard.html';
-          }, 800);
-        } else {
-          showToast("Error", data.message || "Google Authentication failed", "error");
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        showToast("Error", "Server connection failed during Google Sign-In.", "error");
-      });
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            showToast("Success", "Logged in with Google!", "success");
+            setTimeout(() => {
+              window.location.href = 'dashboard.html';
+            }, 800);
+          } else {
+            showToast("Error", data.message || "Google Authentication failed", "error");
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          showToast("Error", "Server connection failed during Google Sign-In.", "error");
+        });
     }
   </script>
 </body>
+
 </html>

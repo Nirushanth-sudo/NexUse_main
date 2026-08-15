@@ -12,13 +12,7 @@
   <!-- GLOBAL NAVBAR -->
   <nav class="navbar" id="mainNavbar">
     <a href="../index.html" class="navbar-brand" id="navBrand">
-      <svg class="navbar-brand-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 22h8l10 26h28l8-18H30" stroke="#1a5cff" stroke-width="6" stroke-linecap="round"
-          stroke-linejoin="round" />
-        <circle cx="36" cy="60" r="6" fill="#1a5cff" />
-        <circle cx="60" cy="60" r="6" fill="#1a5cff" />
-        <path d="M48 38c-3-5-10-5-13 0-2.5 4 0 10 6 14l7 5 7-5c6-4 8.5-10 6-14-3-5-10-5-13 0z" fill="#12b76a" />
-      </svg>
+      <img class="navbar-brand-logo" src="images/NexUse.svg" alt="NexUse Logo">
       <span><span class="nex">Nex</span><span class="use">Use</span></span>
     </a>
 
@@ -162,8 +156,11 @@
   <dialog class="modal" id="donationReqModal">
     <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: var(--primary);">📝</div>
-        <span class="modal-title" id="drModalTitle" style="font-size: 1.2rem; font-weight: 800;">Create Donation Request</span>
+        <div
+          style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: var(--primary);">
+          📝</div>
+        <span class="modal-title" id="drModalTitle" style="font-size: 1.2rem; font-weight: 800;">Create Donation
+          Request</span>
       </div>
       <button class="modal-close-btn" onclick="document.getElementById('donationReqModal').close()">&times;</button>
     </div>
@@ -403,14 +400,18 @@
   </dialog>
 
   <!-- Pledge Success Modal -->
-  <dialog class="modal" id="pledgeSuccessModal" style="max-width: 440px; text-align: center; border-radius: var(--radius-xl);">
+  <dialog class="modal" id="pledgeSuccessModal"
+    style="max-width: 440px; text-align: center; border-radius: var(--radius-xl);">
     <div class="modal-body" style="padding: 36px 28px;">
       <div class="success-checkmark-circle">✓</div>
       <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">Pledge Submitted!</h3>
       <p style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin-bottom: 24px;">
         Thank you for your generosity! Your offer of help has been sent to the requester.
       </p>
-      <button class="btn btn-primary btn-md" id="plSuccessCloseBtn" onclick="document.getElementById('pledgeSuccessModal').close()" style="width: 100%; justify-content: center; font-weight: 700; box-shadow: 0 4px 12px rgba(26, 92, 255, 0.25);">Great, close</button>
+      <button class="btn btn-primary btn-md" id="plSuccessCloseBtn"
+        onclick="document.getElementById('pledgeSuccessModal').close()"
+        style="width: 100%; justify-content: center; font-weight: 700; box-shadow: 0 4px 12px rgba(26, 92, 255, 0.25);">Great,
+        close</button>
     </div>
   </dialog>
 

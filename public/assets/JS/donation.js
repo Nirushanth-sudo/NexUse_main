@@ -127,6 +127,13 @@ function initDonations() {
     // Initial Render
     renderDonationRequests(true);
     animateStats();
+
+    // Check if specific request is requested in URL
+    const params = new URLSearchParams(window.location.search);
+    const detailId = params.get("id");
+    if (detailId) {
+        openDonationDetail(parseInt(detailId));
+    }
 }
 
 function animateStats() {
@@ -157,6 +164,21 @@ function animateStats() {
 
 // Sample dummy data to simulate your backend database
 const MOCK_DONATION_REQUESTS = [
+    {
+        id: 203,
+        category: 'Books',
+        location: 'Colombo',
+        title: 'A/L Chemistry Past Papers',
+        item_type: 'BOOKS',
+        description: 'Chemistry past papers from 2018-2023 for student in need.',
+        proof_file: null,
+        requester_name: 'John Doe',
+        rating: 4.80,
+        requester_id: 1,
+        urgent: false,
+        target_qty: 1,
+        pledged_qty: 0
+    },
     {
         id: 1,
         category: 'Electronics',

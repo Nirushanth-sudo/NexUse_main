@@ -22,8 +22,8 @@ const MOCK_USERS_DB = {
             disputes: 0
         },
         listings: [
-            { id: 201, type: "buy", title: "Scientific Calculator", category: "Electronics", price: 15.00, emoji: "🧮", condition: "Like New", location: "Colombo" },
-            { id: 202, type: "rent", title: "Professional Tripod", category: "Other", price: 3.50, emoji: "📷", condition: "Good", location: "Colombo" }
+            { id: 201, type: "buy", title: "Scientific Calculator", category: "Electronics", price: 15.00, emoji: "🧮", condition: "Like New", location: "Colombo", image: "electronics.jpg" },
+            { id: 202, type: "rent", title: "Professional Tripod", category: "Other", price: 3.50, emoji: "📷", condition: "Good", location: "Colombo", image: "cam.png" }
         ],
         donations: [
             { id: 203, category: "Books", title: "A/L Chemistry Past Papers", item_type: "BOOKS", description: "Chemistry past papers from 2018-2023 for student in need.", location: "Colombo" }
@@ -53,7 +53,7 @@ const MOCK_USERS_DB = {
             disputes: 0
         },
         listings: [
-            { id: 301, type: "buy", title: "Children Storybooks", category: "Books", price: 4.00, emoji: "📚", condition: "Good", location: "Gampaha" }
+            { id: 301, type: "buy", title: "Children Storybooks", category: "Books", price: 4.00, emoji: "📚", condition: "Good", location: "Gampaha", image: "books.jpg" }
         ],
         donations: [
             { id: 1, category: "Electronics", title: "Laptops for School", item_type: "LAPTOPS", description: "I want 10 Laptops for my school. Students from remote villages attend this center.", location: "Gampaha", proof_file: "#" }
@@ -83,8 +83,8 @@ const MOCK_USERS_DB = {
             disputes: 0
         },
         listings: [
-            { id: 401, type: "rent", title: "Sewing Machine", category: "Tools", price: 5.00, emoji: "🧵", condition: "Good", location: "Colombo" },
-            { id: 402, type: "buy", title: "Fiction Novels Pack", category: "Books", price: 10.00, emoji: "📖", condition: "Like New", location: "Colombo" }
+            { id: 401, type: "rent", title: "Sewing Machine", category: "Tools", price: 5.00, emoji: "🧵", condition: "Good", location: "Colombo", image: "tools.jpg" },
+            { id: 402, type: "buy", title: "Fiction Novels Pack", category: "Books", price: 10.00, emoji: "📖", condition: "Like New", location: "Colombo", image: "books.jpg" }
         ],
         donations: [
             { id: 2, category: "Books", title: "Textbooks for Grade 10", item_type: "BOOKS", description: "Need mathematics and science textbooks for 15 students preparing for exams.", location: "Colombo", proof_file: null }
@@ -114,7 +114,7 @@ const MOCK_USERS_DB = {
             disputes: 0
         },
         listings: [
-            { id: 501, type: "share", title: "Electric Lawn Mower", category: "Tools", price: 0.00, emoji: "⚙️", condition: "Fair", location: "Kandy" }
+            { id: 501, type: "share", title: "Electric Lawn Mower", category: "Tools", price: 0.00, emoji: "⚙️", condition: "Fair", location: "Kandy", image: "tools.jpg" }
         ],
         donations: [
             { id: 3, category: "Furniture", title: "Study Desks for Community Center", item_type: "DESKS", description: "Looking for 5 wooden study desks in good condition to rebuild the village center.", location: "Kandy", proof_file: "#" }
@@ -144,8 +144,8 @@ const MOCK_USERS_DB = {
             disputes: 0
         },
         listings: [
-            { id: 401, type: "rent", title: "Sewing Machine", category: "Tools", price: 5.00, emoji: "🧵", condition: "Good", location: "Colombo" },
-            { id: 402, type: "buy", title: "Fiction Novels Pack", category: "Books", price: 10.00, emoji: "📖", condition: "Like New", location: "Colombo" }
+            { id: 401, type: "rent", title: "Sewing Machine", category: "Tools", price: 5.00, emoji: "🧵", condition: "Good", location: "Colombo", image: "tools.jpg" },
+            { id: 402, type: "buy", title: "Fiction Novels Pack", category: "Books", price: 10.00, emoji: "📖", condition: "Like New", location: "Colombo", image: "books.jpg" }
         ],
         donations: [
             { id: 2, category: "Books", title: "Textbooks for Grade 10", item_type: "BOOKS", description: "Need mathematics and science textbooks for 15 students preparing for exams.", location: "Colombo", proof_file: null }
@@ -258,23 +258,27 @@ function renderUserListings(listings) {
     container.innerHTML = listings.map(l => {
         const badgeClass = l.type === 'buy' ? 'badge-sell' : l.type === 'rent' ? 'badge-rent' : 'badge-donate';
         const badgeText = l.type === 'buy' ? 'SELL' : l.type === 'rent' ? 'RENT' : 'FREE';
-        const priceHtml = l.type === 'buy' ? `<div class="product-card-price" style="font-weight:700; color:var(--primary); font-size:1.1rem;">$${l.price.toFixed(2)}</div>` :
-                          l.type === 'rent' ? `<div class="product-card-price" style="font-weight:700; color:var(--primary); font-size:1.1rem;">$${l.price.toFixed(2)}/day</div>` :
-                          `<div class="product-card-price free" style="font-weight:700; color:var(--green); font-size:1.1rem;">FREE</div>`;
+        const priceHtml = l.type === 'buy' ? `<div class="product-card-price">$${l.price.toFixed(2)}</div>` :
+                          l.type === 'rent' ? `<div class="product-card-price">$${l.price.toFixed(2)}/day</div>` :
+                          `<div class="product-card-price free">FREE</div>`;
+
+        const imageHtml = l.image || l.imageUrl ?
+            `<img src="${l.imageUrl ? l.imageUrl : `assets/images/${l.image}`}" alt="${escapeHTML(l.title)}">` :
+            `<span>${escapeHTML(l.emoji || '📦')}</span>`;
 
         return `
-            <div class="product-card" style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--shadow-xs);">
-                <div class="product-card-image" style="height:120px; display:flex; align-items:center; justify-content:center; background:var(--bg); position:relative; font-size:2.8rem;">
-                    <span>${l.emoji || '📦'}</span>
-                    <span class="product-card-badge badge ${badgeClass}" style="position:absolute; top:12px; left:12px; font-size:0.65rem; font-weight:700; padding:3px 8px; border-radius:var(--radius-pill); color:#fff; background:${l.type==='buy'?'var(--primary)':l.type==='rent'?'var(--amber)':'var(--green)'};">${badgeText}</span>
+            <a href="marketplace.html?id=${l.id}" class="product-card">
+                <div class="product-card-image">
+                    ${imageHtml}
+                    <span class="product-card-badge badge ${badgeClass}">${badgeText}</span>
                 </div>
-                <div class="product-card-body" style="padding:16px; display:flex; flex-direction:column; gap:6px; flex:1;">
-                    <div class="product-card-category" style="font-size:0.75rem; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">${l.category}</div>
-                    <div class="product-card-title" style="font-size:0.95rem; font-weight:700; color:var(--text);">${l.title}</div>
+                <div class="product-card-body">
+                    <div class="product-card-category">${l.category}</div>
+                    <div class="product-card-title">${l.title}</div>
                     ${priceHtml}
-                    <div class="product-card-location" style="font-size:0.78rem; color:var(--text-secondary); margin-top:auto; display:flex; align-items:center; gap:4px;">📍 ${l.location}</div>
+                    <div class="product-card-location">📍 ${l.location}</div>
                 </div>
-            </div>
+            </a>
         `;
     }).join("");
 }
@@ -304,18 +308,18 @@ function renderUserDonations(donations) {
         const imageUrl = categoryImages[d.category] || categoryImages['Other'];
 
         return `
-            <div class="donation-card" style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--shadow-xs);">
-                <div style="height:120px; width:100%; overflow:hidden; position:relative;">
-                    <img src="${imageUrl}" alt="${d.category}" style="width:100%; height:100%; object-fit:cover;">
-                    <span style="position:absolute; top:12px; left:12px; font-size:0.65rem; font-weight:700; padding:4px 8px; border-radius:var(--radius-pill); background:var(--green); color:#fff; text-transform:uppercase;">${d.category}</span>
+            <a href="donation.html?id=${d.id}" class="donation-card">
+                <div class="donation-card-image">
+                    <img src="${imageUrl}" alt="${d.category}">
+                    <span class="donation-card-badge">${d.category}</span>
                 </div>
-                <div style="padding:16px; display:flex; flex-direction:column; gap:6px; flex:1;">
-                    <div style="font-size:0.95rem; font-weight:700; color:var(--text);">${d.title}</div>
-                    <div style="font-size:0.7rem; font-weight:700; color:var(--green); letter-spacing:0.05em; text-transform:uppercase;">Needed: ${d.item_type}</div>
-                    <div style="font-size:0.8rem; color:var(--text-secondary); line-height:1.5; margin-bottom:8px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">${d.description}</div>
-                    <div style="font-size:0.78rem; color:var(--text-secondary); margin-top:auto; display:flex; align-items:center; gap:4px;">📍 ${d.location}</div>
+                <div class="donation-card-body">
+                    <div class="donation-card-title">${d.title}</div>
+                    <div class="donation-card-needed">Needed: ${d.item_type}</div>
+                    <div class="donation-card-desc">${d.description}</div>
+                    <div class="donation-card-location">📍 ${d.location}</div>
                 </div>
-            </div>
+            </a>
         `;
     }).join("");
 }

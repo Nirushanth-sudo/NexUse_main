@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard – NexUse</title>
   <link rel="stylesheet" href="assets/css/dashboard.css">
 </head>
+
 <body>
 
   <!-- GLOBAL NAVBAR -->
   <nav class="navbar" id="mainNavbar">
     <a href="../index.html" class="navbar-brand" id="navBrand">
-      <svg class="navbar-brand-logo" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 22h8l10 26h28l8-18H30" stroke="#1a5cff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="36" cy="60" r="6" fill="#1a5cff"/>
-        <circle cx="60" cy="60" r="6" fill="#1a5cff"/>
-        <path d="M48 38c-3-5-10-5-13 0-2.5 4 0 10 6 14l7 5 7-5c6-4 8.5-10 6-14-3-5-10-5-13 0z" fill="#12b76a"/>
-      </svg>
+      <img class="navbar-brand-logo" src="images/NexUse.svg" alt="NexUse Logo">
       <span><span class="nex">Nex</span><span class="use">Use</span></span>
     </a>
 
@@ -63,12 +60,16 @@
       <div class="dash-profile-rating" id="dashRatingEl">-</div>
 
       <nav class="dash-nav">
-        <button class="dash-nav-item active" onclick="switchDashTab('activity')" id="dashTab-activity">🛒 My Activity (Buy/Rent/Receive)</button>
-        <button class="dash-nav-item" onclick="switchDashTab('storefront')" id="dashTab-storefront">🏪 My Storefront (Sell/Lend/Donate)</button>
-        <button class="dash-nav-item" onclick="switchDashTab('profile')" id="dashTab-profile">⚙️ Profile Settings</button>
+        <button class="dash-nav-item active" onclick="switchDashTab('activity')" id="dashTab-activity">🛒 My Activity
+          (Buy/Rent/Receive)</button>
+        <button class="dash-nav-item" onclick="switchDashTab('storefront')" id="dashTab-storefront">🏪 My Storefront
+          (Sell/Lend/Donate)</button>
+        <button class="dash-nav-item" onclick="switchDashTab('profile')" id="dashTab-profile">⚙️ Profile
+          Settings</button>
         <div id="adminDeskBtn-wrapper" class="hidden">
           <div style="border-top:1px solid var(--border);margin:12px 0;"></div>
-          <a href="admin.html" class="dash-nav-item" style="color:#ef4444;" id="dashTab-admin">🛡️ Administrator Desk</a>
+          <a href="admin.html" class="dash-nav-item" style="color:#ef4444;" id="dashTab-admin">🛡️ Administrator
+            Desk</a>
         </div>
         <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:8px;">
           <button class="dash-nav-item" id="dashLogoutBtn">🚪 Log Out</button>
@@ -82,28 +83,38 @@
       <!-- TAB: MY ACTIVITY -->
       <div id="dashView-activity">
         <div class="dash-page-title">My Consumption Activity</div>
-        <div class="dash-page-sub">Track your cart checkout, wishlist, purchases, active rentals, and donation receivership.</div>
+        <div class="dash-page-sub">Track your cart checkout, wishlist, purchases, active rentals, and donation
+          receivership.</div>
 
         <div class="dash-row">
           <div class="dash-panel">
             <div class="dash-panel-title">🛒 My Shopping Cart</div>
-            <div id="dashCart"><div class="dash-empty">Cart is empty.</div></div>
+            <div id="dashCart">
+              <div class="dash-empty">Cart is empty.</div>
+            </div>
           </div>
           <div class="dash-panel">
             <div class="dash-panel-title">❤️ My Wishlist</div>
-            <div id="dashWishlist"><div class="dash-empty">Wishlist is empty.</div></div>
+            <div id="dashWishlist">
+              <div class="dash-empty">Wishlist is empty.</div>
+            </div>
           </div>
         </div>
 
         <div class="dash-panel-full">
           <div class="dash-panel-title">📦 Transactions &amp; Rental Tracking</div>
-          <div id="dashTransactions"><div class="dash-empty">No purchase or rental logs yet.</div></div>
+          <div id="dashTransactions">
+            <div class="dash-empty">No purchase or rental logs yet.</div>
+          </div>
         </div>
 
         <div class="dash-panel-full">
           <div class="dash-panel-title">💝 Donation Receivership Tracker</div>
-          <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:12px;">Review active pledges made by donors for your donation requests.</p>
-          <div id="dashDonationReceivership"><div class="dash-empty">No active donor pledges received yet.</div></div>
+          <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:12px;">Review active pledges made by
+            donors for your donation requests.</p>
+          <div id="dashDonationReceivership">
+            <div class="dash-empty">No active donor pledges received yet.</div>
+          </div>
         </div>
       </div>
 
@@ -118,12 +129,16 @@
         </div>
         <div class="dash-panel-full">
           <div class="dash-panel-title">🛍️ Active Listings</div>
-          <div id="dashMyListings"><div class="dash-empty">You have no active listings.</div></div>
+          <div id="dashMyListings">
+            <div class="dash-empty">You have no active listings.</div>
+          </div>
         </div>
 
         <div class="dash-panel-full">
           <div class="dash-panel-title">📥 Incoming Requests &amp; Orders</div>
-          <div id="dashIncomingRequests"><div class="dash-empty">No incoming orders or requests.</div></div>
+          <div id="dashIncomingRequests">
+            <div class="dash-empty">No incoming orders or requests.</div>
+          </div>
         </div>
       </div>
 
@@ -158,8 +173,10 @@
         <!-- Dispute Reporting -->
         <div class="dash-panel-full mt-16" style="max-width:520px;">
           <div class="dash-panel-title">⚠️ Report a Dispute</div>
-          <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:16px;">Report suspicious activity, damaged items, or transaction problems.</p>
-          <button class="btn btn-outline btn-md" onclick="openDisputeModal()" style="color:#ef4444;border-color:#ef4444;">File a Dispute Report</button>
+          <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:16px;">Report suspicious activity,
+            damaged items, or transaction problems.</p>
+          <button class="btn btn-outline btn-md" onclick="openDisputeModal()"
+            style="color:#ef4444;border-color:#ef4444;">File a Dispute Report</button>
         </div>
       </div>
 
@@ -191,11 +208,13 @@
         </div>
         <div class="form-group">
           <label class="form-label">Description</label>
-          <textarea class="form-control" id="dspDescription" placeholder="Describe the incident in detail…" required></textarea>
+          <textarea class="form-control" id="dspDescription" placeholder="Describe the incident in detail…"
+            required></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline btn-md" onclick="document.getElementById('disputeModal').close()">Cancel</button>
+        <button type="button" class="btn btn-outline btn-md"
+          onclick="document.getElementById('disputeModal').close()">Cancel</button>
         <button type="submit" class="btn btn-primary btn-md" style="background:#ef4444;">File Dispute</button>
       </div>
     </form>
@@ -205,4 +224,5 @@
 
 
 </body>
+
 </html>

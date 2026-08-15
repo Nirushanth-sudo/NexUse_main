@@ -48,6 +48,102 @@ const MOCK_MARKETPLACE_LISTINGS = [
         owner_rating: 4.9,
         in_wishlist: false,
         in_cart: false
+    },
+    {
+        id: 201,
+        title: "Scientific Calculator",
+        category: "Electronics",
+        condition: "Like New",
+        type: "buy",
+        price: 15.00,
+        location: "Colombo",
+        description: "Excellent scientific calculator, perfect for high school or university students.",
+        image: "electronics.jpg",
+        owner_id: 1,
+        owner_name: "John Doe",
+        owner_rating: 4.80,
+        in_wishlist: false,
+        in_cart: false
+    },
+    {
+        id: 202,
+        title: "Professional Tripod",
+        category: "Other",
+        condition: "Good",
+        type: "rent",
+        price: 3.50,
+        location: "Colombo",
+        description: "Sturdy aluminum tripod, adjustable height, fits standard cameras.",
+        image: "cam.png",
+        owner_id: 1,
+        owner_name: "John Doe",
+        owner_rating: 4.80,
+        in_wishlist: false,
+        in_cart: false
+    },
+    {
+        id: 301,
+        title: "Children Storybooks",
+        category: "Books",
+        condition: "Good",
+        type: "buy",
+        price: 4.00,
+        location: "Gampaha",
+        description: "A collection of 5 illustrated storybooks for young children.",
+        image: "books.jpg",
+        owner_id: 101,
+        owner_name: "Nished Ruveesha",
+        owner_rating: 5.00,
+        in_wishlist: false,
+        in_cart: false
+    },
+    {
+        id: 401,
+        title: "Sewing Machine",
+        category: "Tools",
+        condition: "Good",
+        type: "rent",
+        price: 5.00,
+        location: "Colombo",
+        description: "Portable sewing machine with pedal. Great for quick repairs or DIY crafts.",
+        image: "tools.jpg",
+        owner_id: 102,
+        owner_name: "Amara Perera",
+        owner_rating: 4.85,
+        in_wishlist: false,
+        in_cart: false
+    },
+    {
+        id: 402,
+        title: "Fiction Novels Pack",
+        category: "Books",
+        condition: "Like New",
+        type: "buy",
+        price: 10.00,
+        location: "Colombo",
+        description: "Pack of 3 bestselling fiction novels. Read once and kept in pristine condition.",
+        image: "books.jpg",
+        owner_id: 102,
+        owner_name: "Amara Perera",
+        owner_rating: 4.85,
+        in_wishlist: false,
+        in_cart: false
+    },
+    {
+        id: 501,
+        title: "Electric Lawn Mower",
+        category: "Tools",
+        condition: "Fair",
+        type: "share",
+        price: 0.00,
+        location: "Kandy",
+        description: "Electric lawn mower, corded. Free to share with neighbors in Kandy.",
+        image: "tools.jpg",
+        owner_id: 103,
+        owner_name: "Saman Kumara",
+        owner_rating: 4.50,
+        in_wishlist: false,
+        in_cart: false
     }
 ];
 
@@ -56,6 +152,13 @@ document.addEventListener('DOMContentLoaded', () => {
     window.sessionPromise.then(user => {
         // Init UI listeners
         initMarketplace();
+
+        // Check if specific listing is requested in URL
+        const params = new URLSearchParams(window.location.search);
+        const detailId = params.get("id");
+        if (detailId) {
+            openProductDetail(parseInt(detailId));
+        }
     });
 
     const lImageInput = document.getElementById('lImage');
