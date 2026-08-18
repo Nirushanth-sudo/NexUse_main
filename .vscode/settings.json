@@ -1,3 +1,4 @@
 {
-    "css.lint.vendorPrefix": "ignore"
+    "css.lint.vendorPrefix": "ignore",
+    "explorer.compactFolders": false
 }
