@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donation Requests – NexUse</title>
+  <link rel="stylesheet" href="assets/css/donation.css">
+</head>
+
+<body>
+  <!-- GLOBAL NAVBAR -->
+  <nav class="navbar" id="mainNavbar">
+    <a href="index.html" class="navbar-brand" id="navBrand">
+      <img class="navbar-brand-logo" src="images/NexUse.svg" alt="NexUse Logo">
+      <span><span class="nex">Nex</span><span class="use">Use</span></span>
+    </a>
+
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="index.html" id="nav-home">Home</a></li>
+      <li><a href="marketplace.html" id="nav-marketplace">Marketplace</a></li>
+      <li><a href="donation.html" id="nav-donation-requests">Donation Requests</a></li>
+      <li id="nav-dashboard-li" class="hidden"><a href="dashboard.html" id="nav-dashboard">Dashboard</a></li>
+    </ul>
+
+    <div class="navbar-actions" id="navActions">
+      <!-- Logged-out state -->
+      <div id="navLoggedOut" class="flex gap-8">
+        <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+      <!-- Logged-in state -->
+      <div id="navLoggedIn" class="hidden flex gap-12">
+        <div class="notif-wrapper">
+          <button class="notif-bell-btn" id="notifBellBtn" title="Notifications">
+            🔔
+            <span class="notif-count-badge hidden" id="notifCountBadge">0</span>
+          </button>
+          <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-dropdown-head">
+              <span>Notifications</span>
+              <a href="#" id="markAllReadBtn">Mark all read</a>
+            </div>
+            <div class="notif-list" id="notifList"></div>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page-content" id="view-donation-requests">
+    <div class="donation-page-hero">
+      <h1>Support Your Neighbors</h1>
+      <p>Browse community donation needs or create a request if you need support with essential items.</p>
+
+      <!-- Community Stats Counter Row -->
+      <div class="hero-stats-row">
+        <div class="stat-badge">
+          <span class="stat-num" id="statActiveRequests">0</span>
+          <span class="stat-label">Active Needs</span>
+        </div>
+        <div class="stat-badge">
+          <span class="stat-num" id="statTotalPledges">0</span>
+          <span class="stat-label">Pledges Fulfilled</span>
+        </div>
+        <div class="stat-badge">
+          <span class="stat-num" id="statNeighborsHelped">0</span>
+          <span class="stat-label">Neighbors Helped</span>
+        </div>
+      </div>
+
+      <!-- Guest / Logged-out state -->
+      <a href="login.html" class="btn btn-primary btn-md" id="donPageSignInBtn">Sign In to Request Item</a>
+      <!-- Authenticated / Logged-in state -->
+      <button class="btn btn-primary btn-md hidden" id="donPageCreateBtn" onclick="openDonationRequestModal()">
+        + Create Donation Request
+      </button>
+    </div>
+
+    <div class="donation-layout">
+      <!-- Sidebar Filters overlay -->
+      <div class="sidebar-overlay" id="donSidebarOverlay"></div>
+
+      <!-- Sidebar Filters -->
+      <aside class="marketplace-sidebar" id="donMarketplaceSidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-heading">Filters</div>
+          <button class="sidebar-close-btn" id="donSidebarCloseBtn" aria-label="Close filters">&times;</button>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">CATEGORY</div>
+          <div class="filter-pills-group" id="donFilterCategory">
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Electronics">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Electronics</span>
+            </label>
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Furniture">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Furniture</span>
+            </label>
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Books">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Books</span>
+            </label>
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Clothing">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Clothing</span>
+            </label>
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Tools">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Tools</span>
+            </label>
+            <label class="filter-pill-label">
+              <input type="checkbox" value="Other">
+              <span class="filter-pill-text"><!--<span class="check-icon">✓</span>--> Other</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">LOCATION</div>
+          <div class="custom-select-wrapper">
+            <select class="form-control" id="donFilterLocation">
+              <option value="">All Locations</option>
+              <option value="Colombo">Colombo</option>
+              <option value="Colombo Suburb">Colombo Suburb</option>
+            </select>
+            <span class="location-icon">📍</span> <!-- Or use an SVG pin icon -->
+          </div>
+        </div>
+
+        <button class="sidebar-btn-reset" id="donResetFiltersBtn">
+          <span class="reset-icon">↺</span> RESET ALL FILTERS
+        </button>
+      </aside>
+
+      <div class="donation-main">
+        <div class="donation-controls">
+          <button class="btn btn-outline btn-md mobile-filter-btn" id="donMobileFilterBtn">
+            <svg class="icon-filter" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            Filters
+          </button>
+        </div>
+        <div class="donation-cards-grid" id="donCardsGrid">
+          <!-- dynamic donation cards -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <dialog class="modal" id="donationReqModal">
+    <div class="modal-header modal-header-borderless">
+      <div class="modal-title-wrapper">
+        <div class="modal-title-icon">📝</div>
+        <span class="modal-title modal-title-bold" id="drModalTitle">Create Donation Request</span>
+      </div>
+      <button class="modal-close-btn" onclick="document.getElementById('donationReqModal').close()">&times;</button>
+    </div>
+    <form id="donationReqForm">
+      <div class="modal-body modal-body-top-padded">
+        <div class="form-group">
+          <label class="form-label">What do you need *</label>
+          <input type="text" class="form-control" id="drTitle" placeholder="e.g. Laptops for Kids Charity Program"
+            required>
+        </div>
+        <div class="form-row">
+          <div>
+            <label class="form-label">Category *</label>
+            <select class="form-control" id="drCategory" required>
+              <option value="Electronics">Electronic Items</option>
+              <option value="Books">Books and Educational Equipment</option>
+              <option value="Clothing">Clothing and Accessories</option>
+              <option value="Tools">Manual and Mechanical Tools</option>
+              <option value="Furniture">Furniture</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Your Location (District)*</label>
+            <select class="form-control" id="drLocation" required>
+              <option value="" disabled>Select District</option>
+              <option value="Ampara">Ampara</option>
+              <option value="Anuradhapura">Anuradhapura</option>
+              <option value="Badulla">Badulla</option>
+              <option value="Batticaloa">Batticaloa</option>
+              <option value="Colombo">Colombo</option>
+              <option value="Galle">Galle</option>
+              <option value="Gampaha">Gampaha</option>
+              <option value="Hambantota">Hambantota</option>
+              <option value="Jaffna">Jaffna</option>
+              <option value="Kalutara">Kalutara</option>
+              <option value="Kandy">Kandy</option>
+              <option value="Kegalle">Kegalle</option>
+              <option value="Kilinochchi">Kilinochchi</option>
+              <option value="Kurunegala">Kurunegala</option>
+              <option value="Mannar">Mannar</option>
+              <option value="Matale">Matale</option>
+              <option value="Matara">Matara</option>
+              <option value="Monaragala">Monaragala</option>
+              <option value="Mullaitivu">Mullaitivu</option>
+              <option value="Nuwara Eliya">Nuwara Eliya</option>
+              <option value="Polonnaruwa">Polonnaruwa</option>
+              <option value="Puttalam">Puttalam</option>
+              <option value="Ratnapura">Ratnapura</option>
+              <option value="Trincomalee">Trincomalee</option>
+              <option value="Vavuniya">Vavuniya</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label class="form-label">Item Needed (specific type) *</label>
+            <input type="text" class="form-control" id="drItemType" placeholder="e.g. LAPTOPS / TABLETS" required>
+          </div>
+          <div>
+            <label class="form-label">Quantity Required *</label>
+            <input type="number" class="form-control" id="drQuantity" min="1" placeholder="e.g. 5" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Explain your need *</label>
+          <textarea class="form-control" id="drDescription"
+            placeholder="Describe why you need it, quantity, condition acceptable…" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Attach Proof / Documents / Images (Optional)</label>
+          <div class="file-upload-wrapper">
+            <input type="file" id="drProof" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt">
+            <div class="file-upload-box">
+              <span class="upload-icon">📤</span>
+              <span class="upload-text">Drag &amp; drop files or <span class="upload-link">browse</span></span>
+              <span class="upload-info">PDF, Images, Word, Text (Max 5MB)</span>
+            </div>
+          </div>
+          <div id="drCurrentProofInfo" class="dr-current-proof-info" style="display:none;"></div>
+          <div class="flex items-center gap-8 dr-remove-proof-group" id="drRemoveProofGroup" style="display: none;">
+            <input type="checkbox" id="drRemoveProof" class="checkbox-auto">
+            <label for="drRemoveProof" class="label-remove-proof">Remove existing proof file</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-md"
+          onclick="document.getElementById('donationReqModal').close()">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-md" id="drSubmitBtn">Post Request</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Donation Detail Modal -->
+  <dialog class="modal" id="donationDetailModal">
+    <div class="modal-header">
+      <span class="modal-title" id="dTitleHeader">Donation Request Details</span>
+      <button class="modal-close-btn" id="dCloseBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-modal-image-area" id="dImageArea">
+        <img id="dCoverImage" class="detail-modal-image" src="" alt="Category Image">
+        <span class="detail-modal-badge" id="dBadge"></span>
+      </div>
+      <div class="detail-meta-grid">
+        <div class="detail-meta-item">
+          <div class="detail-meta-label">Location</div>
+          <div class="detail-meta-value" id="dLocation">-</div>
+        </div>
+        <div class="detail-meta-item">
+          <div class="detail-meta-label">Specific Item</div>
+          <div class="detail-meta-value" id="dItemType">-</div>
+        </div>
+        <div class="detail-meta-item">
+          <div class="detail-meta-label">Quantity</div>
+          <div class="detail-meta-value" id="dQuantityProgress">-</div>
+        </div>
+        <div class="detail-meta-item">
+          <div class="detail-meta-label">Status</div>
+          <div class="detail-meta-value" id="dVerifiedStatus">-</div>
+        </div>
+      </div>
+
+      <!-- Detail Modal Progress Bar -->
+      <div class="donation-progress-container detail-progress-container" id="dProgressContainer">
+        <div class="donation-progress-labels">
+          <span class="detail-progress-label-text">Pledge Progress</span>
+          <span id="dProgressText" class="detail-progress-text">0 / 0 pledged</span>
+        </div>
+        <div class="donation-progress-bar detail-progress-bar-bg">
+          <div class="donation-progress-fill" id="dProgressFill"></div>
+        </div>
+      </div>
+
+      <div class="detail-section-border">
+        <div class="detail-section-title">Explain Need</div>
+        <p id="dDescription" class="detail-description-text"></p>
+      </div>
+
+      <!-- Proof document area -->
+      <div id="dProofArea" class="hidden detail-section-border">
+        <div class="detail-section-title">Verified Proof &amp; Documents</div>
+        <div id="dProofLinkContainer"></div>
+      </div>
+
+      <!-- Requester trust info box -->
+      <div class="modal-trust-box">
+        <a id="dRequesterLink" class="trust-requester-link" href="">
+          <div id="dRequesterAvatar" class="donor-info-avatar trust-requester-avatar">-</div>
+          <div>
+            <div class="trust-requester-name" id="dRequesterName">-</div>
+            <div class="trust-requester-stars" id="dRequesterStars">
+              ⭐ - <span class="trust-rating-label">(Rating)</span>
+            </div>
+          </div>
+        </a>
+        <a id="dRequesterProfileBtn" href="" class="btn btn-outline btn-sm">View Trust Profile</a>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-md" id="dChatBtn">💬 Message Requester</button>
+      <button class="btn btn-green btn-md" id="dActionBtn">Pledge Item</button>
+    </div>
+  </dialog>
+
+  <!-- Pledge Item Dialog Modal -->
+  <dialog class="modal" id="pledgeModal">
+    <div class="modal-header modal-header-borderless">
+      <div class="modal-title-wrapper">
+        <div class="modal-title-icon">💝</div>
+        <span class="modal-title modal-title-bold">Make a Pledge</span>
+      </div>
+      <button class="modal-close-btn" onclick="document.getElementById('pledgeModal').close()">&times;</button>
+    </div>
+    <form id="pledgeForm">
+      <div class="modal-body modal-body-top-padded">
+        <p class="modal-subtitle">
+          Pledging items helps support your neighbors. Please enter details about what you can donate and optionally
+          upload proof.
+        </p>
+        <div class="form-group">
+          <label class="form-label">What can you do for this request? *</label>
+          <textarea class="form-control pl-note-textarea" id="plNote" placeholder="e.g. I can drop off 2 books next Saturday afternoon."
+            required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Attach Proof of Donation Capability (Optional)</label>
+          <div class="file-upload-wrapper">
+            <input type="file" id="plProof" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt">
+            <div class="file-upload-box">
+              <span class="upload-icon">📤</span>
+              <span class="upload-text">Drag &amp; drop files or <span class="upload-link">browse</span></span>
+              <span class="upload-info">PDF, Images, Word, Text (Max 5MB)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-md"
+          onclick="document.getElementById('pledgeModal').close()">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-md" id="plSubmitBtn">Submit Pledge</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Pledge Success Modal -->
+  <dialog class="modal modal-success-size" id="pledgeSuccessModal">
+    <div class="modal-body modal-body-success">
+      <div class="success-checkmark-circle">✓</div>
+      <h3 class="modal-success-title">Pledge Submitted!</h3>
+      <p class="modal-success-text">
+        Thank you for your generosity! Your offer of help has been sent to the requester.
+      </p>
+      <button class="btn btn-primary btn-md btn-success-close" id="plSuccessCloseBtn"
+        onclick="document.getElementById('pledgeSuccessModal').close()">Great, close</button>
+    </div>
+  </dialog>
+
+  <script src="assets/JS/common.js"></script>
+  <script src="assets/JS/donation.js"></script>
+</body>
+
+</html>
