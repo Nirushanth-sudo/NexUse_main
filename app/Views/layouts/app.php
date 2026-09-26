@@ -117,7 +117,7 @@ if (!empty($formWidth)) { $containerClass .= ' container-form'; }
 
       <?php else: ?>
         <a class="btn btn-secondary btn-sm" href="<?= url('/login') ?>">Sign in</a>
-        <a class="btn btn-sm" href="<?= url('/register') ?>">Create account</a>
+        <a class="btn btn-sm" href="<?= url('/register') ?>">Sign up</a>
       <?php endif; ?>
     </div>
 
